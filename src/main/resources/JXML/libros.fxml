@@ -13,8 +13,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="483.0" prefWidth="403.0" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="joel.dein.proyectobibliotecadein.CONTROLLER.LibrosController">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="483.0" prefWidth="403.0" stylesheets="@../STYLES/styles.css" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="joel.dein.proyectobibliotecadein.CONTROLLER.LibrosController">
    <children>
       <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="67.0" prefWidth="513.0" text="Libro" textAlignment="CENTER">
          <font>
@@ -25,7 +24,7 @@
          <children>
             <AnchorPane prefHeight="369.0" prefWidth="199.0">
                <children>
-                  <Button layoutX="40.0" layoutY="53.0" mnemonicParsing="false" onAction="#aniadirImagen" text="Añadir" />
+                  <Button layoutY="53.0" mnemonicParsing="false" onAction="#aniadirImagen" prefHeight="30.0" prefWidth="94.0" text="Añadir" />
                   <Label layoutX="66.0" layoutY="14.0" text="Portada">
                      <font>
                         <Font size="20.0" />

@@ -1,0 +1,114 @@
+package STYLES;/* General background color for the application */
+.root {
+    -fx-background-color: linear-gradient(to bottom, #e11d48, #ffffff); /* Gradient from red to white */
+}
+
+/* Gradient background for VBox */
+.vbox {
+    -fx-background-color: linear-gradient(to bottom, #e11d48, #ffffff); /* Gradient from red to white */
+}
+
+.hbox {
+    -fx-background-color: #e11d48;
+}
+
+/* Tabs styling */
+.tab-pane {
+    -fx-background-color: linear-gradient(to bottom, #e11d48, #ffffff);
+    -fx-border-color: #1e3a8a; /* Deep blue border for the tab pane */
+    -fx-border-width: 2px;
+    -fx-border-radius: 10px;
+    -fx-padding: 10;
+}
+
+.tab-header-area {
+    -fx-background-color: #e11d48; /* Vivid red for the tab header */
+    -fx-padding: 5;
+    -fx-border-radius: 10px 10px 0 0;
+}
+
+.tab {
+    -fx-background-color: transparent;
+    -fx-border-radius: 10px 10px 0 0;
+    -fx-text-fill: #ffffff;
+    -fx-font-weight: bold;
+}
+
+.tab:selected {
+     -fx-background-color: #4f8fd3; /* Blue for the selected tab */
+    -fx-color: #00c1c1; /* Light red text for the selected tab */
+}
+
+/* Button styling */
+.button {
+    -fx-background-color: linear-gradient(to bottom, #3b82f6, #2563eb); /* Blue gradient */
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-border-radius: 10px;
+    -fx-background-radius: 10px;
+    -fx-padding: 10 20;
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.2), 5, 0, 2, 2);
+}
+
+.button:hover {
+    -fx-background-color: linear-gradient(to bottom, #2563eb, #1d4ed8); /* Darker blue on hover */
+}
+
+.button:pressed {
+    -fx-background-color: #1e40af; /* Even darker blue on press */
+}
+
+/* Labels */
+.label {
+    -fx-text-fill: #1e293b; /* Dark gray-blue for labels */
+    -fx-font-weight: normal;
+}
+
+/* Text Fields */
+.text-field {
+    -fx-background-color: #ffffff;
+    -fx-border-color: #3b82f6;
+    -fx-border-radius: 8px;
+    -fx-background-radius: 8px;
+    -fx-padding: 5 10;
+}
+
+.text-field:focused {
+    -fx-border-color: #e11d48; /* Red border on focus */
+}
+
+/* ListView and TableView */
+.list-view, .table-view {
+    -fx-background-color: #ffffff;
+    -fx-border-color: #1e3a8a; /* Blue border */
+    -fx-border-radius: 10px;
+    -fx-padding: 5;
+}
+
+/* Table Header */
+.table-view .column-header-background {
+    -fx-background-color: #e11d48; /* Red background for table header */
+    -fx-border-radius: 10px 10px 0 0;
+    -fx-font-weight: bold;
+    -fx-text-fill: white;
+}
+
+/* ScrollBars */
+.scroll-bar {
+    -fx-background-color: transparent;
+}
+
+.scroll-bar .thumb {
+    -fx-background-color: #2563eb; /* Blue thumb */
+    -fx-background-radius: 5px;
+}
+
+/* Tooltip */
+.tooltip {
+    -fx-background-color: #1e3a8a; /* Blue tooltip background */
+    -fx-text-fill: white;
+    -fx-font-size: 12px;
+    -fx-padding: 5;
+    -fx-border-radius: 5px;
+}
