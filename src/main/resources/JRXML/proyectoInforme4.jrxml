@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.20.5.final using JasperReports Library version 6.20.5-3efcf2e67f959db3888d79f73dde2dbd7acb4f8e  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="proyectoInforme4" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="084cf844-6011-4e8a-a3dd-c5bf48b776c7">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w1" value="136"/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w2" value="859"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="ContraDockerExamen1"/>
+	<parameter name="IMAGE_PATH" class="java.lang.String"/>
+	<queryString language="SQL">
+		<![CDATA[SELECT 
+     libros.`Alumno`.dni  AS dni_alumno,
+     libros.`Alumno`.nombre  AS nombre_alumno,
+     libros.`Alumno`.apellido1  AS apellido1_alumno,
+     libros.`Alumno`.apellido2  AS apellido2_alumno,
+    COUNT( libros.`Historico_prestamo`.id_prestamo ) AS num_libros_prestados,
+    SUM(DATEDIFF( libros.`Historico_prestamo`.fecha_devolucion , libros.`Historico_prestamo`.fecha_prestamo  )) AS dias_totales_prestamo
+FROM 
+     libros.`Alumno` 
+INNER JOIN 
+    libros.`Historico_prestamo`  ON  libros.`Alumno`.dni =  libros.`Historico_prestamo`.dni_alumno 
+WHERE 
+    libros.`Historico_prestamo`.fecha_devolucion   IS NOT NULL
+GROUP BY 
+     libros.`Alumno`.dni 
+ORDER BY 
+    libros.`Alumno`.apellido1 ,  libros.`Alumno`.apellido2]]>
+	</queryString>
+	<field name="dni_alumno" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="dni"/>
+		<property name="com.jaspersoft.studio.field.label" value="dni_alumno"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="Alumno"/>
+	</field>
+	<field name="nombre_alumno" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="nombre"/>
+		<property name="com.jaspersoft.studio.field.label" value="nombre_alumno"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="Alumno"/>
+	</field>
+	<field name="apellido1_alumno" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="apellido1"/>
+		<property name="com.jaspersoft.studio.field.label" value="apellido1_alumno"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="Alumno"/>
+	</field>
+	<field name="apellido2_alumno" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="apellido2"/>
+		<property name="com.jaspersoft.studio.field.label" value="apellido2_alumno"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="Alumno"/>
+	</field>
+	<field name="num_libros_prestados" class="java.lang.Long">
+		<property name="com.jaspersoft.studio.field.name" value="num_libros_prestados"/>
+		<property name="com.jaspersoft.studio.field.label" value="num_libros_prestados"/>
+	</field>
+	<field name="dias_totales_prestamo" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="dias_totales_prestamo"/>
+		<property name="com.jaspersoft.studio.field.label" value="dias_totales_prestamo"/>
+	</field>
+	<group name="dni_alumno">
+		<groupExpression><![CDATA[$F{dni_alumno}]]></groupExpression>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="80" splitType="Stretch">
+			<staticText>
+				<reportElement mode="Opaque" x="0" y="0" width="550" height="80" forecolor="#FFFFFF" backcolor="#FC1008" uuid="aa86c39d-28d7-4c6a-8f87-6a25481a5b8b"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="40"/>
+				</textElement>
+				<text><![CDATA[DATOS CALCULADOS]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="126" splitType="Stretch">
+			<staticText>
+				<reportElement mode="Opaque" x="122" y="25" width="310" height="80" forecolor="#FFFFFF" backcolor="#FC1008" uuid="8baac1e7-5ffb-4adb-b9e7-c20765d4b749"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="40"/>
+				</textElement>
+				<text><![CDATA[LibroVerso]]></text>
+			</staticText>
+			<image>
+				<reportElement x="40" y="25" width="80" height="80" uuid="a009dd98-3ac0-4c50-95e8-3bf2c63fde77"/>
+				<imageExpression><![CDATA[$P{IMAGE_PATH}+"logoBiblioteca.png"]]></imageExpression>
+			</image>
+			<line>
+				<reportElement x="0" y="120" width="549" height="1" uuid="428e70d4-60f1-4e35-af1b-9fdf4efd35bb"/>
+			</line>
+			<line>
+				<reportElement x="0" y="10" width="549" height="1" uuid="a308c479-600f-4fac-8b3a-e933ad205e59"/>
+			</line>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="30" splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="130" splitType="Stretch">
+			<textField>
+				<reportElement mode="Opaque" x="180" y="70" width="370" height="30" forecolor="#050000" backcolor="#08FBFF" uuid="6f553017-f5ed-404e-882c-4b5a45f6f99e"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{num_libros_prestados}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement mode="Opaque" x="180" y="40" width="370" height="30" forecolor="#050000" backcolor="#08FBFF" uuid="f84e9edc-8e46-4dc7-9869-79800f43aa0b"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{dni_alumno}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement mode="Opaque" x="0" y="0" width="550" height="40" forecolor="#FFFFFF" backcolor="#FF0F17" uuid="a3febc1b-b3ee-416f-8210-22cc03c4ad30"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="25"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{nombre_alumno} + " "+ $F{apellido1_alumno} + " "+ $F{apellido2_alumno}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement mode="Opaque" x="180" y="100" width="370" height="30" forecolor="#050000" backcolor="#08FBFF" uuid="b4ce56b3-11a9-4f57-aac1-4b37fadb6fdd"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{dias_totales_prestamo}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement mode="Opaque" x="0" y="40" width="180" height="30" backcolor="#08FBFF" uuid="f1092ae6-6066-441d-98e3-ffe9dd646b4d"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle"/>
+				<text><![CDATA[  DNI:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="0" y="70" width="180" height="30" backcolor="#08FBFF" uuid="a5baeb0d-2d9d-44f1-b0ce-2300f1e1c527"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle"/>
+				<text><![CDATA[  Cantidad de libros prestados:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="0" y="100" width="180" height="30" backcolor="#08FBFF" uuid="70fb7d1f-1aaf-4bb9-b21d-fdb0dbf32016"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle"/>
+				<text><![CDATA[  Dias totales en prestamo:]]></text>
+			</staticText>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="45" splitType="Stretch">
+			<line>
+				<reportElement x="0" y="34" width="549" height="1" uuid="7cf70d65-7e78-495c-89c5-cf4f125d90eb"/>
+			</line>
+		</band>
+	</columnFooter>
+	<pageFooter>
+		<band height="30" splitType="Stretch">
+			<textField>
+				<reportElement x="370" y="0" width="100" height="30" uuid="50af64c4-43c4-4a6c-b1da-edfdbc0ded66"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA["Página "+$V{PAGE_NUMBER}+" /"]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement x="470" y="0" width="79" height="30" uuid="b601b518-3495-42fb-8f2e-ab8006309815"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField pattern="EEEE, d &apos;de&apos; MMMM &apos;del&apos; yyyy">
+				<reportElement x="0" y="14" width="230" height="15" uuid="d1180630-d07c-42bc-8b83-491feec2abe3"/>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>
