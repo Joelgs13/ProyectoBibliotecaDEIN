@@ -5,7 +5,8 @@ module joel.dein.proyectobibliotecadein {
     requires jasperreports;
     requires org.slf4j;
 
-
+    opens joel.dein.proyectobibliotecadein.MODEL to javafx.base;
+    exports joel.dein.proyectobibliotecadein.MODEL to javafx.fxml;
     opens joel.dein.proyectobibliotecadein to javafx.fxml;
     exports joel.dein.proyectobibliotecadein;
     opens joel.dein.proyectobibliotecadein.CONTROLLER to javafx.fxml;
