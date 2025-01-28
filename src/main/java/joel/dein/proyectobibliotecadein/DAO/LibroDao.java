@@ -14,6 +14,15 @@ import java.sql.*;
  */
 public class LibroDao {
 
+    private static Connection conn;
+
+    static {
+        conn = ConexionBBDD.getConnection();
+    }
+
+    public LibroDao() throws SQLException {
+    }
+
     /**
      * Obtiene un libro por su código.
      *
@@ -22,9 +31,7 @@ public class LibroDao {
      */
     public static LibroModel getLibro(int codigo) {
         String sql = "SELECT * FROM Libro WHERE codigo = ?";
-        try (Connection conn = ConexionBBDD.getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
-
+        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setInt(1, codigo);
             ResultSet rs = pstmt.executeQuery();
 
@@ -53,9 +60,8 @@ public class LibroDao {
     public static ObservableList<LibroModel> getTodosLibros() {
         ObservableList<LibroModel> listaLibros = FXCollections.observableArrayList();
         String sql = "SELECT * FROM Libro";
-        try (Connection conn = ConexionBBDD.getConnection();
-             Statement stmt = conn.createStatement();
-             ResultSet rs = stmt.executeQuery(sql)) {
+        try (PreparedStatement pstmt = conn.prepareStatement(sql);
+             ResultSet rs = pstmt.executeQuery()) {
 
             while (rs.next()) {
                 listaLibros.add(new LibroModel(
@@ -82,9 +88,8 @@ public class LibroDao {
     public static ObservableList<LibroModel> getTodosLibrosConBajaA0() {
         ObservableList<LibroModel> listaLibros = FXCollections.observableArrayList();
         String sql = "SELECT * FROM Libro WHERE baja = 0";
-        try (Connection conn = ConexionBBDD.getConnection();
-             Statement stmt = conn.createStatement();
-             ResultSet rs = stmt.executeQuery(sql)) {
+        try (PreparedStatement pstmt = conn.prepareStatement(sql);
+             ResultSet rs = pstmt.executeQuery()) {
 
             while (rs.next()) {
                 listaLibros.add(new LibroModel(
@@ -110,7 +115,7 @@ public class LibroDao {
      * @return un objeto Blob que representa la imagen.
      */
     public static Blob convertirABlob(byte[] data) {
-        try (Connection conn = ConexionBBDD.getConnection()) {
+        try {
             Blob blob = conn.createBlob();
             blob.setBytes(1, data);
             return blob;
@@ -128,9 +133,7 @@ public class LibroDao {
      */
     public static boolean insertLibro(LibroModel libro) {
         String sql = "INSERT INTO Libro (titulo, autor, editorial, estado, baja, imagen) VALUES (?, ?, ?, ?, ?, ?)";
-        try (Connection conn = ConexionBBDD.getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
-
+        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setString(1, libro.getTitulo());
             pstmt.setString(2, libro.getAutor());
             pstmt.setString(3, libro.getEditorial());
@@ -153,9 +156,7 @@ public class LibroDao {
      */
     public static boolean updateLibro(LibroModel libro) {
         String sql = "UPDATE Libro SET titulo = ?, autor = ?, editorial = ?, estado = ?, baja = ?, imagen = ? WHERE codigo = ?";
-        try (Connection conn = ConexionBBDD.getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
-
+        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setString(1, libro.getTitulo());
             pstmt.setString(2, libro.getAutor());
             pstmt.setString(3, libro.getEditorial());
@@ -179,9 +180,7 @@ public class LibroDao {
      */
     public static boolean bajaDelLibro(int codigo) {
         String sql = "UPDATE Libro SET baja = 1 WHERE codigo = ?";
-        try (Connection conn = ConexionBBDD.getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
-
+        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setInt(1, codigo);
             return pstmt.executeUpdate() > 0;
 

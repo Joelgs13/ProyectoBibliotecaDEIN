@@ -3,33 +3,45 @@ package joel.dein.proyectobibliotecadein.CONTROLLER;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import java.io.IOException;
+import joel.dein.proyectobibliotecadein.DAO.AlumnosDao;
+import joel.dein.proyectobibliotecadein.DAO.HistoricoPrestamoDao;
+import joel.dein.proyectobibliotecadein.DAO.LibroDao;
+import joel.dein.proyectobibliotecadein.DAO.PrestamoDao;
+import joel.dein.proyectobibliotecadein.MODEL.AlumnoModel;
+import joel.dein.proyectobibliotecadein.MODEL.HistoricoPrestamoModel;
+import joel.dein.proyectobibliotecadein.MODEL.LibroModel;
+import joel.dein.proyectobibliotecadein.MODEL.PrestamoModel;
+import joel.dein.proyectobibliotecadein.BBDD.ConexionBBDD;
 
-public class BibliotecaController {
+import java.io.IOException;
+import java.net.URL;
+import java.sql.SQLException;
+import java.util.List;
+import java.util.ResourceBundle;
+
+public class BibliotecaController implements Initializable {
 
     @FXML
     private ComboBox<?> cbFiltroHistorico;
 
     @FXML
-    private TableView<?> tablaAlumnos;
+    private TableView<AlumnoModel> tablaAlumnos;
 
     @FXML
-    private TableView<?> tablaDevoluciones;
+    private TableView<LibroModel> tablaLibros;
 
     @FXML
-    private TableView<?> tablaHistorico;
+    private TableView<PrestamoModel> tablaPrestamos;
 
     @FXML
-    private TableView<?> tablaLibros;
-
-    @FXML
-    private TableView<?> tablaPrestamos;
+    private TableView<HistoricoPrestamoModel> tablaHistorico;
 
     @FXML
     private TextField tfFiltrarAlumno;
@@ -42,6 +54,36 @@ public class BibliotecaController {
 
     @FXML
     private TextField tfFiltrarPrestamo;
+
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        System.out.println("iniciando...");
+        try {
+            ConexionBBDD con = new ConexionBBDD();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        cargarDatosTablas();
+    }
+
+    private void cargarDatosTablas() {
+        // Cargar datos de alumnos
+        List<AlumnoModel> alumnos = AlumnosDao.getTodosAlumnos();
+        tablaAlumnos.getItems().setAll(alumnos);
+
+        // Cargar datos de libros con baja = 0
+        List<LibroModel> libros = LibroDao.getTodosLibrosConBajaA0();
+        tablaLibros.getItems().setAll(libros);
+
+        // Cargar datos de préstamos
+        List<PrestamoModel> prestamos = PrestamoDao.getTodosPrestamo();
+        tablaPrestamos.getItems().setAll(prestamos);
+
+        // Cargar datos del histórico de préstamos
+        List<HistoricoPrestamoModel> historicoPrestamos = HistoricoPrestamoDao.getTodosHistorialPrestamo();
+        tablaHistorico.getItems().setAll(historicoPrestamos);
+    }
 
     /*
     * Metodo que sirve para cargar una nueva pantalla

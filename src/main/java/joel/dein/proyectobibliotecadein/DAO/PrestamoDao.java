@@ -14,6 +14,15 @@ import java.util.List;
 
 public class PrestamoDao {
 
+    private static Connection conn;
+
+    static {
+        conn = ConexionBBDD.getConnection();
+    }
+
+    public PrestamoDao() throws SQLException {
+    }
+
     /**
      * Obtiene un préstamo por su ID.
      *
@@ -22,9 +31,7 @@ public class PrestamoDao {
      */
     public static PrestamoModel getPrestamo(int idPrestamo) {
         String sql = "SELECT * FROM Prestamo WHERE id_prestamo = ?";
-        try (Connection conn = ConexionBBDD.getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
-
+        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setInt(1, idPrestamo);
             ResultSet rs = pstmt.executeQuery();
 
@@ -50,10 +57,8 @@ public class PrestamoDao {
     public static ObservableList<PrestamoModel> getTodosPrestamo() {
         ObservableList<PrestamoModel> listaPrestamos = FXCollections.observableArrayList();
         String sql = "SELECT * FROM Prestamo";
-
-        try (Connection conn = ConexionBBDD.getConnection();
-             Statement stmt = conn.createStatement();
-             ResultSet rs = stmt.executeQuery(sql)) {
+        try (PreparedStatement pstmt = conn.prepareStatement(sql);
+             ResultSet rs = pstmt.executeQuery()) {
 
             while (rs.next()) {
                 listaPrestamos.add(new PrestamoModel(
@@ -81,9 +86,7 @@ public class PrestamoDao {
         }
 
         String sql = "INSERT INTO Prestamo (dni_alumno, codigo_libro, fecha_prestamo) VALUES (?, ?, ?)";
-        try (Connection conn = ConexionBBDD.getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
-
+        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setString(1, prestamo.getAlumno().getDni());
             pstmt.setInt(2, prestamo.getLibro().getCodigo());
             pstmt.setTimestamp(3, Timestamp.valueOf(prestamo.getFecha_prestamo()));
@@ -105,9 +108,7 @@ public class PrestamoDao {
         List<PrestamoModel> prestamos = new ArrayList<>();
         String sql = "SELECT * FROM Prestamo WHERE dni_alumno = ?";
 
-        try (Connection conn = ConexionBBDD.getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
-
+        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setString(1, alumno.getDni());
             ResultSet rs = pstmt.executeQuery();
 
@@ -135,9 +136,7 @@ public class PrestamoDao {
         List<PrestamoModel> prestamos = new ArrayList<>();
         String sql = "SELECT * FROM Prestamo WHERE codigo_libro = ?";
 
-        try (Connection conn = ConexionBBDD.getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
-
+        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setInt(1, libro.getCodigo());
             ResultSet rs = pstmt.executeQuery();
 
@@ -163,9 +162,7 @@ public class PrestamoDao {
      */
     public static boolean comprobarSiLibroSePuedePrestar(int codigoLibro) {
         String sql = "SELECT COUNT(*) FROM Prestamo WHERE codigo_libro = ?";
-        try (Connection conn = ConexionBBDD.getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
-
+        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setInt(1, codigoLibro);
             ResultSet rs = pstmt.executeQuery();
 
@@ -186,9 +183,7 @@ public class PrestamoDao {
      */
     public static boolean deletePrestamo(int idPrestamo) {
         String sql = "DELETE FROM Prestamo WHERE id_prestamo = ?";
-        try (Connection conn = ConexionBBDD.getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
-
+        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setInt(1, idPrestamo);
             return pstmt.executeUpdate() > 0;
 

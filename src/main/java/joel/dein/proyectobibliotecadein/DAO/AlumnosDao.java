@@ -12,6 +12,15 @@ import java.sql.*;
  */
 public class AlumnosDao {
 
+    private static Connection conn;
+
+    static {
+        conn = ConexionBBDD.getConnection();
+    }
+
+    public AlumnosDao() throws SQLException {
+    }
+
     /**
      * Obtiene un alumno por su DNI.
      *
@@ -20,9 +29,7 @@ public class AlumnosDao {
      */
     public static AlumnoModel getAlumno(String dni) {
         String sql = "SELECT * FROM Alumno WHERE dni = ?";
-        try (Connection conn = ConexionBBDD.getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
-
+        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setString(1, dni);
             ResultSet rs = pstmt.executeQuery();
 
@@ -47,10 +54,10 @@ public class AlumnosDao {
      */
     public static ObservableList<AlumnoModel> getTodosAlumnos() {
         ObservableList<AlumnoModel> listaAlumnos = FXCollections.observableArrayList();
+
         String sql = "SELECT * FROM Alumno";
-        try (Connection conn = ConexionBBDD.getConnection();
-             Statement stmt = conn.createStatement();
-             ResultSet rs = stmt.executeQuery(sql)) {
+        try (PreparedStatement pstmt = conn.prepareStatement(sql);
+             ResultSet rs = pstmt.executeQuery()) {
 
             while (rs.next()) {
                 listaAlumnos.add(new AlumnoModel(
@@ -74,9 +81,7 @@ public class AlumnosDao {
      */
     public static boolean insertAlumno(AlumnoModel alumno) {
         String sql = "INSERT INTO Alumno (dni, nombre, apellido1, apellido2) VALUES (?, ?, ?, ?)";
-        try (Connection conn = ConexionBBDD.getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
-
+        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setString(1, alumno.getDni());
             pstmt.setString(2, alumno.getNombre());
             pstmt.setString(3, alumno.getApellido1());
@@ -97,9 +102,7 @@ public class AlumnosDao {
      */
     public static boolean updateAlumno(AlumnoModel alumno) {
         String sql = "UPDATE Alumno SET nombre = ?, apellido1 = ?, apellido2 = ? WHERE dni = ?";
-        try (Connection conn = ConexionBBDD.getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
-
+        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setString(1, alumno.getNombre());
             pstmt.setString(2, alumno.getApellido1());
             pstmt.setString(3, alumno.getApellido2());
@@ -118,12 +121,9 @@ public class AlumnosDao {
      * @param dni el DNI del alumno a eliminar.
      * @return true si la eliminación fue exitosa, false en caso contrario.
      */
-
-   /* public static boolean deleteAlumno(String dni) {
+    public static boolean deleteAlumno(String dni) {
         String sql = "DELETE FROM Alumno WHERE dni = ?";
-        try (Connection conn = ConexionBBDD.getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
-
+        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setString(1, dni);
             return pstmt.executeUpdate() > 0;
 
@@ -131,7 +131,7 @@ public class AlumnosDao {
             e.printStackTrace();
         }
         return false;
-    }*/
+    }
 
     /**
      * Comprueba si un alumno existe en la base de datos.
@@ -141,9 +141,7 @@ public class AlumnosDao {
      */
     public static boolean existeAlumno(String dni) {
         String sql = "SELECT dni FROM Alumno WHERE dni = ?";
-        try (Connection conn = ConexionBBDD.getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
-
+        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setString(1, dni);
             ResultSet rs = pstmt.executeQuery();
             return rs.next();

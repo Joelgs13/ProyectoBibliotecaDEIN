@@ -12,6 +12,12 @@ import java.util.List;
 
 public class HistoricoPrestamoDao {
 
+    private static Connection conn;
+
+    static {
+        conn = ConexionBBDD.getConnection();
+    }
+
     /**
      * Obtiene un registro de historial de préstamo por ID.
      *
@@ -20,9 +26,7 @@ public class HistoricoPrestamoDao {
      */
     public static HistoricoPrestamoModel getHistorialPrestamo(int idPrestamo) {
         String sql = "SELECT * FROM Historico_prestamo WHERE id_prestamo = ?";
-        try (Connection conn = ConexionBBDD.getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
-
+        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setInt(1, idPrestamo);
             ResultSet rs = pstmt.executeQuery();
 
@@ -50,9 +54,8 @@ public class HistoricoPrestamoDao {
         List<HistoricoPrestamoModel> listaHistorial = new ArrayList<>();
         String sql = "SELECT * FROM Historico_prestamo";
 
-        try (Connection conn = ConexionBBDD.getConnection();
-             Statement stmt = conn.createStatement();
-             ResultSet rs = stmt.executeQuery(sql)) {
+        try (PreparedStatement pstmt = conn.prepareStatement(sql);
+             ResultSet rs = pstmt.executeQuery()) {
 
             while (rs.next()) {
                 listaHistorial.add(new HistoricoPrestamoModel(
@@ -77,15 +80,12 @@ public class HistoricoPrestamoDao {
      */
     public static boolean insertHistorialPrestamo(HistoricoPrestamoModel prestamo) {
         String sql = "INSERT INTO Historico_prestamo (dni_alumno, codigo_libro, fecha_prestamo, fecha_devolucion) VALUES (?, ?, ?, ?)";
-        try (Connection conn = ConexionBBDD.getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
-
+        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setString(1, prestamo.getAlumno().getDni());
             pstmt.setInt(2, prestamo.getLibro().getCodigo());
             pstmt.setTimestamp(3, Timestamp.valueOf(prestamo.getFecha_prestamo()));
             pstmt.setTimestamp(4, Timestamp.valueOf(prestamo.getFecha_devolucion()));
             return pstmt.executeUpdate() > 0;
-
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -102,9 +102,7 @@ public class HistoricoPrestamoDao {
         List<HistoricoPrestamoModel> listaHistorial = new ArrayList<>();
         String sql = "SELECT * FROM Historico_prestamo WHERE dni_alumno = ?";
 
-        try (Connection conn = ConexionBBDD.getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
-
+        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setString(1, dniAlumno);
             ResultSet rs = pstmt.executeQuery();
 
@@ -133,9 +131,7 @@ public class HistoricoPrestamoDao {
         List<HistoricoPrestamoModel> listaHistorial = new ArrayList<>();
         String sql = "SELECT * FROM Historico_prestamo WHERE codigo_libro = ?";
 
-        try (Connection conn = ConexionBBDD.getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
-
+        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setInt(1, codigoLibro);
             ResultSet rs = pstmt.executeQuery();
 
