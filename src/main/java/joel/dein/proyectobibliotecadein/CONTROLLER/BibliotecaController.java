@@ -86,11 +86,6 @@ public class BibliotecaController {
     }
 
     @FXML
-    void borrarLibro(ActionEvent event) {
-        // Este mtodo está vacío, indícalo si necesita alguna funcionalidad
-    }
-
-    @FXML
     void devolverLibro(ActionEvent event) {
         // Este mtodo está vacío, indícalo si necesita alguna funcionalidad
     }
@@ -98,11 +93,6 @@ public class BibliotecaController {
     @FXML
     void filtrarAlumno(ActionEvent event) {
         // Implementa aquí la funcionalidad de filtro para alumnos
-    }
-
-    @FXML
-    void filtrarDevolucion(ActionEvent event) {
-        // Implementa aquí la funcionalidad de filtro para devoluciones
     }
 
     @FXML
