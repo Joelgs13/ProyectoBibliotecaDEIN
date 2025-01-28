@@ -22,9 +22,22 @@ public class AlumnosController {
     @FXML
     private TextField tfSegundoApellidoAlumno;
 
+    // Referencia al controlador principal
+
+    private Runnable onCloseCallback;
+
+    public void setOnCloseCallback(Runnable onCloseCallback) {
+        this.onCloseCallback = onCloseCallback;
+    }
+
     @FXML
     void cancelar(ActionEvent event) {
-        // Obtener el Stage actual y cerrarlo
+        // Ejecutar el callback si está configurado
+        if (onCloseCallback != null) {
+            onCloseCallback.run();
+        }
+
+        // Cerrar la ventana
         Stage stage = (Stage) tfDniAlumno.getScene().getWindow();
         stage.close();
     }

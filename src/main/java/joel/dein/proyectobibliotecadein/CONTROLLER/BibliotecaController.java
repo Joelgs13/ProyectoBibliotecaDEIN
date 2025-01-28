@@ -118,7 +118,7 @@ public class BibliotecaController implements Initializable {
         cargarDatosTablas();
     }
 
-    private void cargarDatosTablas() {
+    void cargarDatosTablas() {
         // Tabla de alumnos
         List<AlumnoModel> alumnos = AlumnosDao.getTodosAlumnos();
         tablaAlumnos.getItems().setAll(alumnos);
@@ -155,30 +155,38 @@ public class BibliotecaController implements Initializable {
     /*
     * Metodo que sirve para cargar una nueva pantalla
     * */
-    private void cargarPantalla(String rutaFXML, String titulo) {
+    private <T> T cargarPantalla(String rutaFXML, String titulo) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource(rutaFXML));
             Parent root = loader.load();
+
             Stage stage = new Stage();
             stage.setTitle(titulo);
             stage.setScene(new Scene(root));
             stage.show();
+
+            // Devuelve el controlador asociado al archivo FXML
+            return loader.getController();
         } catch (IOException e) {
             e.printStackTrace();
-            // Aquí puedes añadir un diálogo de error si lo necesitas
+            return null; // Maneja el error devolviendo null
         }
     }
 
-    @FXML
-    void aniadirLibro(ActionEvent event) {
-        cargarPantalla("/JXML/libros.fxml", "Añadir Libro");
-    }
 
     @FXML
     void aniadirAlumno(ActionEvent event) {
-        cargarPantalla("/JXML/alumnos.fxml", "Modificar Alumno");
+        AlumnosController alumnosController = cargarPantalla("/JXML/alumnos.fxml", "Añadir Alumno");
+
+        if (alumnosController != null) {
+            // Configurar el callback para actualizar la tabla
+            alumnosController.setOnCloseCallback(this::cargarDatosTablas);
+        }
     }
 
+    public void aniadirLibro(ActionEvent event) {
+        cargarPantalla("/JXML/libros.fxml", "Añadir Libro");
+    }
     @FXML
     void prestarLibro(ActionEvent event) {
         cargarPantalla("/JXML/prestamo.fxml", "Prestar Libro");
@@ -247,4 +255,6 @@ public class BibliotecaController implements Initializable {
     public void cargarGuia(ActionEvent event) {
         // Implementa la funcionalidad para cargar una guía
     }
+
+
 }
