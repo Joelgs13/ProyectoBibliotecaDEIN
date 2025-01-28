@@ -185,7 +185,11 @@ public class BibliotecaController implements Initializable {
     }
 
     public void aniadirLibro(ActionEvent event) {
-        cargarPantalla("/JXML/libros.fxml", "Añadir Libro");
+        LibrosController librosController = cargarPantalla("/JXML/libros.fxml", "Añadir Libro");
+
+        if (librosController != null){
+            librosController.setOnCloseCallback(this::cargarDatosTablas);
+        }
     }
     @FXML
     void prestarLibro(ActionEvent event) {
