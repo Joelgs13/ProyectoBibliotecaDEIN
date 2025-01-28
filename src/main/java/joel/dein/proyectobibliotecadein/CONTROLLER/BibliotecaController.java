@@ -26,10 +26,12 @@ import joel.dein.proyectobibliotecadein.BBDD.ConexionBBDD;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.ResourceBundle;
 
 public class BibliotecaController implements Initializable {
+
 
     @FXML
     private ComboBox<?> cbFiltroHistorico;
@@ -59,52 +61,51 @@ public class BibliotecaController implements Initializable {
     private TextField tfFiltrarPrestamo;
 
     @FXML
-    private TableColumn<?, ?> tcAlumnoTabHistoricoPrestamos;
+    private TableColumn<HistoricoPrestamoModel, String> tcAlumnoTabHistoricoPrestamos;
 
     @FXML
-    private TableColumn<?, ?> tcAlumnoTabPrestamos;
+    private TableColumn<HistoricoPrestamoModel, String> tcApellido1TabAlumnos;
 
     @FXML
-    private TableColumn<?, ?> tcApellido1TabAlumnos;
+    private TableColumn<HistoricoPrestamoModel, String> tcApellido2TabAlumnos;
 
     @FXML
-    private TableColumn<?, ?> tcApellido2TabAlumnos;
+    private TableColumn<LibroModel, String> tcAutorTabLibros;
 
     @FXML
-    private TableColumn<?, ?> tcAutorTabLibros;
+    private TableColumn<LibroModel, Boolean> tcBajaTabLibros;
 
     @FXML
-    private TableColumn<?, ?> tcBajaTabLibros;
+    private TableColumn<AlumnoModel, String> tcDNITabAlumnos;
 
     @FXML
-    private TableColumn<?, ?> tcDNITabAlumnos;
+    private TableColumn<LibroModel, String> tcEditorialTabLibros;
 
     @FXML
-    private TableColumn<?, ?> tcEditorialTabLibros;
+    private TableColumn<LibroModel, String> tcEstadoTabLibros;
 
     @FXML
-    private TableColumn<?, ?> tcEstadoTabLibros;
+    private TableColumn<HistoricoPrestamoModel, LocalDateTime> tcFechaDevolucionTabHistoricoPrestamos;
 
     @FXML
-    private TableColumn<?, ?> tcFechaDevolucionTabHistoricoPrestamos;
+    private TableColumn<HistoricoPrestamoModel, LocalDateTime> tcFechaPrestamoTabHistoricoPrestamos;
+    @FXML
+    public TableColumn<PrestamoModel, String> tcAlumnoTabPrestamos;
 
     @FXML
-    private TableColumn<?, ?> tcFechaPrestamoTabHistoricoPrestamos;
+    private TableColumn<PrestamoModel, LocalDateTime> tcFechaPrestamoTabPrestamos;
 
     @FXML
-    private TableColumn<?, ?> tcFechaPrestamoTabPrestamos;
+    private TableColumn<HistoricoPrestamoModel, String> tcLibroTabHistoricoPrestamos;
 
     @FXML
-    private TableColumn<?, ?> tcLibroTabHistoricoPrestamos;
+    private TableColumn<PrestamoModel, String> tcLibroTabPrestamos;
 
     @FXML
-    private TableColumn<?, ?> tcLibroTabPrestamos;
+    private TableColumn<AlumnoModel, String> tcNombreTabAlumnos;
 
     @FXML
-    private TableColumn<?, ?> tcNombreTabAlumnos;
-
-    @FXML
-    private TableColumn<?, ?> tcTituloTabLibros;
+    private TableColumn<LibroModel, String> tcTituloTabLibros;
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         System.out.println("iniciando...");
@@ -138,17 +139,17 @@ public class BibliotecaController implements Initializable {
         // Tabla de préstamos
         List<PrestamoModel> prestamos = PrestamoDao.getTodosPrestamo();
         tablaPrestamos.getItems().setAll(prestamos);
-        //tcFechaPrestamoTabPrestamos.setCellValueFactory(new PropertyValueFactory<>("fecha_prestamo"));
-        //tcAlumnoTabPrestamos.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getAlumno().getDni()));
-        //tcLibroTabPrestamos.setCellValueFactory(cellData -> new SimpleStringProperty(String.valueOf(cellData.getValue().getLibro().getCodigo())));
+        tcFechaPrestamoTabPrestamos.setCellValueFactory(new PropertyValueFactory<>("fecha_prestamo"));
+        tcAlumnoTabPrestamos.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getAlumno().getDni()));
+        tcLibroTabPrestamos.setCellValueFactory(cellData -> new SimpleStringProperty(String.valueOf(cellData.getValue().getLibro().getCodigo())));
 
         // Tabla de histórico de préstamos
         List<HistoricoPrestamoModel> historicoPrestamos = HistoricoPrestamoDao.getTodosHistorialPrestamo();
         tablaHistorico.getItems().setAll(historicoPrestamos);
-        //tcFechaPrestamoTabHistoricoPrestamos.setCellValueFactory(new PropertyValueFactory<>("fechaPrestamo"));
-        //tcFechaDevolucionTabHistoricoPrestamos.setCellValueFactory(new PropertyValueFactory<>("fechaDevolucion"));
-        //tcAlumnoTabHistoricoPrestamos.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getAlumno().getDni()));
-        //tcLibroTabHistoricoPrestamos.setCellValueFactory(cellData -> new SimpleStringProperty(String.valueOf(cellData.getValue().getLibro().getCodigo())));
+        tcFechaPrestamoTabHistoricoPrestamos.setCellValueFactory(new PropertyValueFactory<>("fecha_prestamo"));
+        tcFechaDevolucionTabHistoricoPrestamos.setCellValueFactory(new PropertyValueFactory<>("fecha_devolucion"));
+        tcAlumnoTabHistoricoPrestamos.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getAlumno().getDni()));
+        tcLibroTabHistoricoPrestamos.setCellValueFactory(cellData -> new SimpleStringProperty(String.valueOf(cellData.getValue().getLibro().getCodigo())));
     }
 
     /*
