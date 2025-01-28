@@ -94,7 +94,7 @@
                         <id>default-cli</id>
                         <configuration>
                             <mainClass>
-                                joel.dein.proyectobibliotecadein/joel.dein.proyectobibliotecadein.HelloApplication
+                                joel.dein.proyectobibliotecadein/joel.dein.proyectobibliotecadein.pantallaBiblioteca
                             </mainClass>
                             <launcher>app</launcher>
                             <jlinkZipName>app</jlinkZipName>
