@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.20.5.final using JasperReports Library version 6.20.5-3efcf2e67f959db3888d79f73dde2dbd7acb4f8e  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="proyectoSubreporte3_3" pageWidth="500" pageHeight="300" columnWidth="460" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="1836dadc-3612-4a1e-ab92-2fc84767a063">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w1" value="117"/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w2" value="878"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="ContraDockerExamen1"/>
+	<queryString language="SQL">
+		<![CDATA[SELECT 
+    'Libros' AS Categoria, 
+    COUNT(*) AS Cantidad
+FROM 
+    libros.Libro
+UNION ALL
+SELECT 
+    'Alumnos' AS Categoria, 
+    COUNT(*) AS Cantidad
+FROM 
+    libros.Alumno
+]]>
+	</queryString>
+	<field name="Categoria" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="Categoria"/>
+		<property name="com.jaspersoft.studio.field.label" value="Categoria"/>
+	</field>
+	<field name="Cantidad" class="java.lang.Long">
+		<property name="com.jaspersoft.studio.field.name" value="Cantidad"/>
+		<property name="com.jaspersoft.studio.field.label" value="Cantidad"/>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="19" splitType="Stretch"/>
+	</title>
+	<columnHeader>
+		<band height="241" splitType="Stretch">
+			<stackedBarChart>
+				<chart evaluationTime="Report">
+					<reportElement x="10" y="10" width="430" height="220" uuid="20309caa-3282-4e5b-a87e-9a6a2cb9cbe6"/>
+					<chartTitle/>
+					<chartSubtitle/>
+					<chartLegend/>
+				</chart>
+				<categoryDataset>
+					<categorySeries>
+						<seriesExpression><![CDATA["SERIES 1"]]></seriesExpression>
+						<categoryExpression><![CDATA[$F{Categoria}]]></categoryExpression>
+						<valueExpression><![CDATA[$F{Cantidad}]]></valueExpression>
+					</categorySeries>
+				</categoryDataset>
+				<barPlot>
+					<plot/>
+					<itemLabel/>
+					<categoryAxisFormat>
+						<axisFormat labelColor="#000000" tickLabelColor="#000000" axisLineColor="#000000"/>
+					</categoryAxisFormat>
+					<valueAxisFormat>
+						<axisFormat labelColor="#000000" tickLabelColor="#000000" axisLineColor="#000000"/>
+					</valueAxisFormat>
+				</barPlot>
+			</stackedBarChart>
+		</band>
+	</columnHeader>
+</jasperReport>
