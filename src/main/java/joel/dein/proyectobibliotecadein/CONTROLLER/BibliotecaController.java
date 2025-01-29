@@ -38,6 +38,7 @@ import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.stream.Collectors;
 
 public class BibliotecaController implements Initializable {
     @FXML
@@ -63,9 +64,6 @@ public class BibliotecaController implements Initializable {
 
     @FXML
     private TextField tfFiltrarAlumno;
-
-    @FXML
-    private TextField tfFiltrarDevolucion;
 
     @FXML
     private TextField tfFiltrarLibros;
@@ -126,7 +124,7 @@ public class BibliotecaController implements Initializable {
         }
 
         cargarDatosTablas();
-        cargarFiltrosHistorico(); // Nuevo método para cargar el ComboBox
+        cargarFiltrosHistorico(); // Nuevo metodo para cargar el ComboBox
     }
 
     private void cargarFiltrosHistorico() {
@@ -261,6 +259,59 @@ public class BibliotecaController implements Initializable {
     }
 
     @FXML
+    void filtrarAlumno(ActionEvent event) {
+        String filtro = tfFiltrarAlumno.getText().trim().toLowerCase();
+
+        List<AlumnoModel> alumnosFiltrados = AlumnosDao.getTodosAlumnos().stream()
+                .filter(alumno -> alumno.getNombre().toLowerCase().contains(filtro))
+                .collect(Collectors.toList());
+
+        tablaAlumnos.getItems().setAll(alumnosFiltrados);
+    }
+
+    @FXML
+    void filtrarLibros(ActionEvent event) {
+        String filtro = tfFiltrarLibros.getText().trim().toLowerCase();
+
+        List<LibroModel> librosFiltrados = LibroDao.getTodosLibrosConBajaA0().stream()
+                .filter(libro -> libro.getTitulo().toLowerCase().contains(filtro))
+                .collect(Collectors.toList());
+
+        tablaLibros.getItems().setAll(librosFiltrados);
+    }
+
+    @FXML
+    void filtrarPrestamo(ActionEvent event) {
+        String filtro = tfFiltrarPrestamo.getText().trim();
+
+        List<PrestamoModel> prestamosFiltrados = PrestamoDao.getTodosPrestamo().stream()
+                .filter(prestamo -> prestamo.getFecha_prestamo().toString().contains(filtro))
+                .collect(Collectors.toList());
+
+        tablaPrestamos.getItems().setAll(prestamosFiltrados);
+    }
+
+    @FXML
+    void filtrarHistorico(ActionEvent event) {
+        String filtro = tfFiltrarHistoricoPrestamo.getText().trim().toLowerCase();
+        String criterio = cbFiltroHistorico.getSelectionModel().getSelectedItem();
+
+        List<HistoricoPrestamoModel> historicoFiltrado = HistoricoPrestamoDao.getTodosHistorialPrestamo().stream()
+                .filter(historico -> {
+                    if ("Por DNI Del alumno".equals(criterio)) {
+                        return historico.getAlumno().getDni().toLowerCase().contains(filtro);
+                    } else if ("Por Título de libro".equals(criterio)) {
+                        return historico.getLibro().getTitulo().toLowerCase().contains(filtro);
+                    }
+                    return true;
+                })
+                .collect(Collectors.toList());
+
+        tablaHistorico.getItems().setAll(historicoFiltrado);
+    }
+
+
+    @FXML
     void modificarAlumno(ActionEvent event) {
         // Este mtodo está vacío, indícalo si necesita alguna funcionalidad
     }
@@ -273,26 +324,6 @@ public class BibliotecaController implements Initializable {
     @FXML
     void devolverLibro(ActionEvent event) {
         // Este mtodo está vacío, indícalo si necesita alguna funcionalidad
-    }
-
-    @FXML
-    void filtrarAlumno(ActionEvent event) {
-        // Implementa aquí la funcionalidad de filtro para alumnos
-    }
-
-    @FXML
-    void filtrarHistorico(ActionEvent event) {
-        // Implementa aquí la funcionalidad de filtro para el histórico
-    }
-
-    @FXML
-    void filtrarLibros(ActionEvent event) {
-        // Implementa aquí la funcionalidad de filtro para libros
-    }
-
-    @FXML
-    void filtrarPrestamo(ActionEvent event) {
-        // Implementa aquí la funcionalidad de filtro para préstamos
     }
 
     @FXML
