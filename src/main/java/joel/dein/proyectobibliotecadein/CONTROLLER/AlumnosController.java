@@ -47,7 +47,7 @@ public class AlumnosController {
         StringBuilder errores = new StringBuilder();
 
         // Validar los campos
-        String dni = tfDniAlumno.getText();
+        String dni = tfDniAlumno.getText().toUpperCase();
         String nombre = tfNombreAlumno.getText();
         String primerApellido = tfPrimerApellidoAlumno.getText();
         String segundoApellido = tfSegundoApellidoAlumno.getText();
