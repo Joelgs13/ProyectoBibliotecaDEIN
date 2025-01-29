@@ -8,6 +8,8 @@ import javafx.collections.ObservableList;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Clase DAO para la gestión de la tabla Libro.
@@ -146,6 +148,35 @@ public class LibroDao {
             e.printStackTrace();
         }
         return false;
+    }
+
+    /**
+     * Obtiene todos los libros que no están actualmente en préstamo.
+     *
+     * @return Lista de libros disponibles para préstamo.
+     */
+    public static List<LibroModel> getLibrosDisponibles() {
+        List<LibroModel> listaLibros = new ArrayList<>();
+        String sql = "SELECT * FROM Libro WHERE codigo NOT IN (SELECT codigo_libro FROM Prestamo)";
+
+        try (PreparedStatement pstmt = conn.prepareStatement(sql);
+             ResultSet rs = pstmt.executeQuery()) {
+
+            while (rs.next()) {
+                listaLibros.add(new LibroModel(
+                        rs.getInt("codigo"),
+                        rs.getString("titulo"),
+                        rs.getString("autor"),
+                        rs.getString("editorial"),
+                        rs.getString("estado"),
+                        rs.getInt("baja"),
+                        rs.getBlob("imagen")
+                ));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return listaLibros;
     }
 
     /**

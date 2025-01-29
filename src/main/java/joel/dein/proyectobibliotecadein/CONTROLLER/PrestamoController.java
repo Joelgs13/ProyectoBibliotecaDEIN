@@ -5,80 +5,144 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
-import joel.dein.proyectobibliotecadein.BBDD.ConexionBBDD;
-import net.sf.jasperreports.engine.JRException;
-import net.sf.jasperreports.engine.JasperFillManager;
-import net.sf.jasperreports.engine.JasperPrint;
-import net.sf.jasperreports.engine.JasperReport;
-import net.sf.jasperreports.engine.util.JRLoader;
-import net.sf.jasperreports.view.JasperViewer;
-
-import java.io.InputStream;
-import java.sql.SQLException;
-import java.util.HashMap;
-import java.util.Map;
+import javafx.stage.Stage;
+import joel.dein.proyectobibliotecadein.DAO.PrestamoDao;
+import joel.dein.proyectobibliotecadein.MODEL.AlumnoModel;
+import joel.dein.proyectobibliotecadein.MODEL.LibroModel;
+import joel.dein.proyectobibliotecadein.MODEL.PrestamoModel;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 public class PrestamoController {
 
     @FXML
-    private ComboBox<?> cbEstudiante;
+    private ComboBox<AlumnoModel> cbEstudiante;
 
     @FXML
-    private ComboBox<?> cbLibro;
+    private ComboBox<LibroModel> cbLibro;
 
     @FXML
     private DatePicker doFechaPrestamo;
 
+    private Runnable onCloseCallback;
+    public void setOnCloseCallback(Runnable onCloseCallback) {
+        this.onCloseCallback = onCloseCallback;
+    }
+    /**
+     * Método que se ejecuta al inicializar la vista de préstamo.
+     */
+    @FXML
+    public void initialize() {
+        cargarEstudiantes();
+        cargarLibrosDisponibles();
+    }
+
+    /**
+     * Carga todos los alumnos disponibles en el ComboBox cbEstudiante.
+     */
+    private void cargarEstudiantes() {
+        cbEstudiante.getItems().setAll(joel.dein.proyectobibliotecadein.DAO.AlumnosDao.getTodosAlumnos());
+    }
+
+    /**
+     * Carga los libros que no están actualmente en préstamo en el ComboBox cbLibro.
+     */
+    private void cargarLibrosDisponibles() {
+        cbLibro.getItems().setAll(joel.dein.proyectobibliotecadein.DAO.LibroDao.getLibrosDisponibles());
+    }
+
+    /**
+     * Cancela la operación y cierra la ventana.
+     */
     @FXML
     void cancelar(ActionEvent event) {
-
+        if (onCloseCallback != null) {
+            onCloseCallback.run();
+        }
+        Stage stage = (Stage) cbEstudiante.getScene().getWindow();
+        stage.close();
     }
 
+    /**
+     * Guarda los cambios realizando las validaciones necesarias.
+     */
     @FXML
     void guardarCambios(ActionEvent event) {
-        //se genera el pdfd el prestamo: y como datos hay que pasar las claver primarias y las fechas
-        Map<String, Object> parameters = new HashMap<>();
-        parameters.put("IMAGE_PATH", getClass().getResource("/IMG/").toString());
-        generarReporte("/JasperReport/InformePConCalculos.jasper", parameters);
-        //parameters.put("dni_alumno", selectedDni); // DNI del estudiante
-        //parameters.put("codigo_libro", selectedCodigoLibro); // Código del libro
-        //parameters.put("fecha_prestamo", selectedDate); // Fecha del préstamo
+        List<String> errores = new ArrayList<>();
 
-    }
+        AlumnoModel alumnoSeleccionado = cbEstudiante.getValue();
+        if (alumnoSeleccionado == null) {
+            errores.add("Debe seleccionar un estudiante.");
+        }
 
-    private void generarReporte(String reportePath, Map<String, Object> parameters) {
-        try {
-            ConexionBBDD db = new ConexionBBDD();
-            InputStream reportStream = getClass().getResourceAsStream(reportePath);
+        LibroModel libroSeleccionado = cbLibro.getValue();
+        if (libroSeleccionado == null) {
+            errores.add("Debe seleccionar un libro disponible.");
+        }
 
-            if (reportStream == null) {
-                System.out.println("El archivo no está ahí: " + reportePath);
-                return;
-            }
+        LocalDate fechaSeleccionada = doFechaPrestamo.getValue();
+        if (fechaSeleccionada == null) {
+            errores.add("Debe seleccionar una fecha de préstamo.");
+        } else if (fechaSeleccionada.isBefore(LocalDate.now())) {
+            errores.add("La fecha de préstamo no puede ser anterior a la actual.");
+        }
 
-            JasperReport report = (JasperReport) JRLoader.loadObject(reportStream);
-            JasperPrint jprint = JasperFillManager.fillReport(report, parameters, db.getConnection());
-            JasperViewer viewer = new JasperViewer(jprint, false);
-            viewer.setVisible(true);
+        if (!errores.isEmpty()) {
+            mostrarError("Errores en el formulario", String.join("\n", errores));
+            return;
+        }
 
-        } catch (SQLException | JRException e) {
-            e.printStackTrace();
-            mostrarError("Error en la base de datos", "No se pudo conectar a la base de datos o generar el informe.");
+        PrestamoModel nuevoPrestamo = new PrestamoModel(
+                0,
+                alumnoSeleccionado,
+                libroSeleccionado,
+                fechaSeleccionada.atStartOfDay()
+        );
+
+        boolean exito = PrestamoDao.insertPrestamo(nuevoPrestamo);
+        if (exito) {
+            mostrarInformacion("Éxito", "Préstamo registrado correctamente.");
+            cancelar(event); // Cierra la ventana tras guardar correctamente
+        } else {
+            mostrarError("Error", "No se pudo registrar el préstamo. Intente nuevamente.");
         }
     }
 
     /**
      * Muestra un cuadro de diálogo con un mensaje de error.
      *
-     * @param titulo El título del cuadro de diálogo.
+     * @param titulo  El título del cuadro de diálogo.
      * @param mensaje El mensaje a mostrar en el cuadro de diálogo.
      */
     private void mostrarError(String titulo, String mensaje) {
-        // Crear una ventana emergente de tipo "error"
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle(titulo);
-        alert.setHeaderText(null); // No queremos un encabezado
-        alert.setContentText(mensaje); // El mensaje que queremos mostrar
-        alert.showAndWait(); // Mostrar el mensaje y esperar a que el usuario lo cierre
+        alert.setHeaderText(null);
+        alert.setContentText(mensaje);
+        alert.showAndWait();
+    }
+
+    /**
+     * Muestra un cuadro de diálogo con un mensaje informativo.
+     *
+     * @param titulo  El título del cuadro de diálogo.
+     * @param mensaje El mensaje a mostrar en el cuadro de diálogo.
+     */
+    private void mostrarInformacion(String titulo, String mensaje) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle(titulo);
+        alert.setHeaderText(null);
+        alert.setContentText(mensaje);
+        alert.showAndWait();
     }
 }
+
+
+        /*Map<String, Object> parameters = new HashMap<>();
+        parameters.put("IMAGE_PATH", getClass().getResource("/IMG/").toString());
+        generarReporte("/JASPERREPORTS/proyectoInforme1.jasper", parameters);
+        parameters.put("dni_alumno", selectedDni); // DNI del estudiante
+        parameters.put("codigo_libro", selectedCodigoLibro); // Código del libro
+        parameters.put("fecha_prestamo", selectedDate); // Fecha del préstamo*/

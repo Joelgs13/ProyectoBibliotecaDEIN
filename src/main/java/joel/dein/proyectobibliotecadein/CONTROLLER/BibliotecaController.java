@@ -239,7 +239,11 @@ public class BibliotecaController implements Initializable {
     }
     @FXML
     void prestarLibro(ActionEvent event) {
-        cargarPantalla("/JXML/prestamo.fxml", "Prestar Libro");
+        PrestamoController prestamoController = cargarPantalla("/JXML/prestamo.fxml", "Prestar Libro");
+
+        if (prestamoController != null){
+            prestamoController.setOnCloseCallback(this::cargarDatosTablas);
+        }
     }
 
     @FXML
