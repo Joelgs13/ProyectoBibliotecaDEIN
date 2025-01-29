@@ -161,6 +161,13 @@ public class LibrosController {
         File file = fileChooser.showOpenDialog(tfTituloLibro.getScene().getWindow());
         if (file != null) {
             try {
+                // Verificar el tamaño del archivo
+                long fileSize = Files.size(file.toPath());
+                if (fileSize > 64 * 1024) { // 64 KB en bytes
+                    mostrarAlerta("Error", "La imagen seleccionada es demasiado grande. Debe ser menor a 64 KB.");
+                    return; // No continuar con la carga de la imagen
+                }
+
                 // Establecer la imagen seleccionada en el ImageView
                 Image image = new Image(file.toURI().toString());
                 ivImagenDePortada.setImage(image);
@@ -172,6 +179,7 @@ public class LibrosController {
             }
         }
     }
+
 
     /**
      * Método para convertir una imagen a un array de bytes.

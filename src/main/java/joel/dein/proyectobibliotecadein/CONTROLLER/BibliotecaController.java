@@ -32,6 +32,8 @@ import java.util.ResourceBundle;
 
 public class BibliotecaController implements Initializable {
 
+    @FXML
+    public TableColumn tcImagenTabLibros;
 
     @FXML
     private ComboBox<?> cbFiltroHistorico;
@@ -71,9 +73,6 @@ public class BibliotecaController implements Initializable {
 
     @FXML
     private TableColumn<LibroModel, String> tcAutorTabLibros;
-
-    @FXML
-    private TableColumn<LibroModel, Boolean> tcBajaTabLibros;
 
     @FXML
     private TableColumn<AlumnoModel, String> tcDNITabAlumnos;
@@ -134,8 +133,6 @@ public class BibliotecaController implements Initializable {
         tcAutorTabLibros.setCellValueFactory(new PropertyValueFactory<>("autor"));
         tcEditorialTabLibros.setCellValueFactory(new PropertyValueFactory<>("editorial"));
         tcEstadoTabLibros.setCellValueFactory(new PropertyValueFactory<>("estado"));
-        tcBajaTabLibros.setCellValueFactory(new PropertyValueFactory<>("baja"));
-
         // Tabla de préstamos
         List<PrestamoModel> prestamos = PrestamoDao.getTodosPrestamo();
         tablaPrestamos.getItems().setAll(prestamos);
