@@ -1,5 +1,6 @@
 package joel.dein.proyectobibliotecadein.CONTROLLER;
 
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -12,6 +13,8 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 import joel.dein.proyectobibliotecadein.DAO.AlumnosDao;
 import joel.dein.proyectobibliotecadein.DAO.HistoricoPrestamoDao;
@@ -23,8 +26,12 @@ import joel.dein.proyectobibliotecadein.MODEL.LibroModel;
 import joel.dein.proyectobibliotecadein.MODEL.PrestamoModel;
 import joel.dein.proyectobibliotecadein.BBDD.ConexionBBDD;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
+import java.sql.Blob;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -33,7 +40,7 @@ import java.util.ResourceBundle;
 public class BibliotecaController implements Initializable {
 
     @FXML
-    public TableColumn tcImagenTabLibros;
+    private TableColumn<LibroModel, ImageView> tcImagenTabLibros;
 
     @FXML
     private ComboBox<?> cbFiltroHistorico;
@@ -133,6 +140,17 @@ public class BibliotecaController implements Initializable {
         tcAutorTabLibros.setCellValueFactory(new PropertyValueFactory<>("autor"));
         tcEditorialTabLibros.setCellValueFactory(new PropertyValueFactory<>("editorial"));
         tcEstadoTabLibros.setCellValueFactory(new PropertyValueFactory<>("estado"));
+        tcImagenTabLibros.setCellValueFactory(cellData -> {
+            LibroModel libro = cellData.getValue();
+            ImageView imageView = new ImageView(blobToImage(blobToBytes(libro.getImagen())));
+
+            // Ajustar el tamaño de la imagen en la celda
+            imageView.setFitWidth(50);  // Ancho deseado
+            imageView.setFitHeight(50); // Alto deseado
+            imageView.setPreserveRatio(true);
+
+            return new SimpleObjectProperty<>(imageView);
+        });
         // Tabla de préstamos
         List<PrestamoModel> prestamos = PrestamoDao.getTodosPrestamo();
         tablaPrestamos.getItems().setAll(prestamos);
@@ -148,6 +166,35 @@ public class BibliotecaController implements Initializable {
         tcAlumnoTabHistoricoPrestamos.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getAlumno().getDni()));
         tcLibroTabHistoricoPrestamos.setCellValueFactory(cellData -> new SimpleStringProperty(String.valueOf(cellData.getValue().getLibro().getCodigo())));
     }
+
+    private byte[] blobToBytes(Blob blob) {
+        if (blob == null) {
+            return null; // Si el blob es nulo, devolvemos null
+        }
+        try (InputStream inputStream = blob.getBinaryStream();
+             ByteArrayOutputStream outputStream = new ByteArrayOutputStream()) {
+
+            byte[] buffer = new byte[4096];
+            int bytesRead;
+            while ((bytesRead = inputStream.read(buffer)) != -1) {
+                outputStream.write(buffer, 0, bytesRead);
+            }
+            return outputStream.toByteArray();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    private Image blobToImage(byte[] imageBytes) {
+        if (imageBytes == null || imageBytes.length == 0) {
+            // Si no hay imagen, usar una imagen por defecto
+            return new Image(getClass().getResource("/IMG/libroIcono.png").toString());
+        }
+
+        return new Image(new ByteArrayInputStream(imageBytes));
+    }
+
 
     /*
     * Metodo que sirve para cargar una nueva pantalla

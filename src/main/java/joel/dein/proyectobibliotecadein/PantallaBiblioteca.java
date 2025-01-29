@@ -38,6 +38,7 @@ public class PantallaBiblioteca extends Application {
 
         // Configurar la ventana
         stage.setTitle("Mi Biblioteca!");  // Establece el título de la ventana
+        stage.setResizable(false);
         stage.setScene(scene);  // Establece la escena en el escenario
         stage.show();  // Muestra la ventana
     }
