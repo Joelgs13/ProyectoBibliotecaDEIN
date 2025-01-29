@@ -86,17 +86,28 @@ public class PrestamoDao {
         }
 
         String sql = "INSERT INTO Prestamo (dni_alumno, codigo_libro, fecha_prestamo) VALUES (?, ?, ?)";
-        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+        try (PreparedStatement pstmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) { // Añadido Statement.RETURN_GENERATED_KEYS
             pstmt.setString(1, prestamo.getAlumno().getDni());
             pstmt.setInt(2, prestamo.getLibro().getCodigo());
             pstmt.setTimestamp(3, Timestamp.valueOf(prestamo.getFecha_prestamo()));
-            return pstmt.executeUpdate() > 0;
 
+            int affectedRows = pstmt.executeUpdate();  // Ejecutar la inserción
+
+            if (affectedRows > 0) {
+                // Recuperar el ID generado
+                try (ResultSet generatedKeys = pstmt.getGeneratedKeys()) {
+                    if (generatedKeys.next()) {
+                        prestamo.setId_prestamo(generatedKeys.getInt(1)); // Asignar el ID generado
+                        return true;
+                    }
+                }
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return false;
     }
+
 
     /**
      * Obtiene todos los préstamos de un alumno.
