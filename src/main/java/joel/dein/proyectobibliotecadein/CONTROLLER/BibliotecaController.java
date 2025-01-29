@@ -38,6 +38,8 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 public class BibliotecaController implements Initializable {
+    @FXML
+    public TextField tfFiltrarHistoricoPrestamo;
 
     @FXML
     private TableColumn<LibroModel, ImageView> tcImagenTabLibros;
@@ -305,4 +307,6 @@ public class BibliotecaController implements Initializable {
     }
 
 
+    public void filtrarHistoricoPrestamo(ActionEvent event) {
+    }
 }

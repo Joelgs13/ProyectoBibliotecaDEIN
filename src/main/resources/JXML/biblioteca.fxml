@@ -11,6 +11,7 @@
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.Tooltip?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -41,6 +42,9 @@
             </items>
           </Menu>
         </menus>
+         <tooltip>
+            <Tooltip text="Opciones varias" />
+         </tooltip>
       </MenuBar>
       <HBox alignment="CENTER" prefHeight="122.0" prefWidth="0.0" spacing="60.0">
          <children>
@@ -64,9 +68,18 @@
                      <children>
                         <HBox alignment="CENTER" layoutY="40.0" prefHeight="36.0" prefWidth="840.0" spacing="100.0">
                            <children>
-                              <Button mnemonicParsing="false" onAction="#aniadirLibro" text="Añadir" />
-                              <Button mnemonicParsing="false" onAction="#modificarLibro" text="Modificar" />
-                              <Button mnemonicParsing="false" onAction="#bajaLibro" text="Dar de baja" />
+                              <Button mnemonicParsing="false" onAction="#aniadirLibro" text="Añadir">
+                                 <tooltip>
+                                    <Tooltip text="añadir un libro" />
+                                 </tooltip></Button>
+                              <Button mnemonicParsing="false" onAction="#modificarLibro" text="Modificar">
+                                 <tooltip>
+                                    <Tooltip text="Modifica el libro seleccionado de la tabla" />
+                                 </tooltip></Button>
+                              <Button mnemonicParsing="false" onAction="#bajaLibro" text="Dar de baja">
+                                 <tooltip>
+                                    <Tooltip text="da un libro de baja" />
+                                 </tooltip></Button>
                            </children>
                         </HBox>
                         <TableView fx:id="tablaLibros" layoutY="79.0" prefHeight="315.0" prefWidth="814.0">
@@ -80,15 +93,24 @@
                            <columnResizePolicy>
                               <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                            </columnResizePolicy>
+                           <tooltip>
+                              <Tooltip text="libros que no estan de baja" />
+                           </tooltip>
                         </TableView>
                         <HBox alignment="CENTER" prefHeight="40.0" prefWidth="840.0" spacing="30.0">
                            <children>
                               <Label text="Filtro" />
-                              <TextField fx:id="tfFiltrarLibros" onAction="#filtrarLibros" prefHeight="0.0" prefWidth="239.0" />
+                              <TextField fx:id="tfFiltrarLibros" onAction="#filtrarLibros" prefHeight="0.0" prefWidth="239.0" promptText="Escribe el titulo a filtrar">
+                                 <tooltip>
+                                    <Tooltip text="filtra por el titulo del libro" />
+                                 </tooltip></TextField>
                            </children>
                         </HBox>
                      </children></AnchorPane>
             </content>
+               <tooltip>
+                  <Tooltip text="Gestion de libros" />
+               </tooltip>
           </Tab>
           <Tab text="Alumnos">
             <content>
@@ -96,8 +118,14 @@
                      <children>
                         <HBox alignment="CENTER" layoutY="40.0" prefHeight="42.0" prefWidth="840.0" spacing="100.0">
                            <children>
-                              <Button mnemonicParsing="false" onAction="#aniadirAlumno" text="Añadir" />
-                              <Button mnemonicParsing="false" onAction="#modificarAlumno" text="Modificar" />
+                              <Button mnemonicParsing="false" onAction="#aniadirAlumno" text="Añadir">
+                                 <tooltip>
+                                    <Tooltip text="Añade un nuevo alumno" />
+                                 </tooltip></Button>
+                              <Button mnemonicParsing="false" onAction="#modificarAlumno" text="Modificar">
+                                 <tooltip>
+                                    <Tooltip text="Modifica el alumno seleccionado de la  tabla" />
+                                 </tooltip></Button>
                            </children>
                         </HBox>
                         <TableView fx:id="tablaAlumnos" layoutX="1.0" layoutY="82.0" prefHeight="312.0" prefWidth="812.0">
@@ -110,15 +138,24 @@
                            <columnResizePolicy>
                               <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                            </columnResizePolicy>
+                           <tooltip>
+                              <Tooltip text="Alumnos disponibles" />
+                           </tooltip>
                         </TableView>
                         <HBox alignment="CENTER" prefHeight="40.0" prefWidth="786.0" spacing="30.0">
                            <children>
                               <Label text="Filtro" />
-                              <TextField fx:id="tfFiltrarAlumno" onAction="#filtrarAlumno" prefHeight="0.0" prefWidth="239.0" />
+                              <TextField fx:id="tfFiltrarAlumno" onAction="#filtrarAlumno" prefHeight="0.0" prefWidth="239.0" promptText="Escribe el nombre del alumno">
+                                 <tooltip>
+                                    <Tooltip text="filtra por el nombre del alumno" />
+                                 </tooltip></TextField>
                            </children>
                         </HBox>
                      </children></AnchorPane>
             </content>
+               <tooltip>
+                  <Tooltip text="Gestion de alumnos" />
+               </tooltip>
           </Tab>
             <Tab text="Prestamos">
               <content>
@@ -126,13 +163,14 @@
                      <children>
                         <HBox alignment="CENTER" layoutY="40.0" prefHeight="48.0" prefWidth="840.0" spacing="100.0">
                            <children>
-                              <Button mnemonicParsing="false" onAction="#prestarLibro" text="Prestar libro" />
-                              <Button mnemonicParsing="false" onAction="#devolverLibro" text="Devolver" />
-                              <Label text="Libros actualmente prestados">
-                                 <font>
-                                    <Font size="20.0" />
-                                 </font>
-                              </Label>
+                              <Button mnemonicParsing="false" onAction="#prestarLibro" text="Prestar libro">
+                                 <tooltip>
+                                    <Tooltip text="&lt;Prestar un libro a un alumno" />
+                                 </tooltip></Button>
+                              <Button mnemonicParsing="false" onAction="#devolverLibro" text="Devolver">
+                                 <tooltip>
+                                    <Tooltip text="Gestionar la devolucion de un libro" />
+                                 </tooltip></Button>
                            </children>
                         </HBox>
                         <TableView fx:id="tablaPrestamos" layoutX="1.0" layoutY="88.0" prefHeight="306.0" prefWidth="814.0">
@@ -144,15 +182,24 @@
                            <columnResizePolicy>
                               <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                            </columnResizePolicy>
+                           <tooltip>
+                              <Tooltip text="Libros actualmente en prestacion" />
+                           </tooltip>
                         </TableView>
                         <HBox alignment="CENTER" prefHeight="40.0" prefWidth="786.0" spacing="30.0">
                            <children>
                               <Label text="Filtro" />
-                              <TextField fx:id="tfFiltrarPrestamo" onAction="#filtrarPrestamo" prefHeight="0.0" prefWidth="239.0" />
+                              <TextField fx:id="tfFiltrarPrestamo" onAction="#filtrarPrestamo" prefHeight="0.0" prefWidth="239.0" promptText="Escribe la fecha del pestamo">
+                                 <tooltip>
+                                    <Tooltip text="filtra por la fecha del prestamo" />
+                                 </tooltip></TextField>
                            </children>
                         </HBox>
                      </children></AnchorPane>
               </content>
+               <tooltip>
+                  <Tooltip text="Gestion de prestamos" />
+               </tooltip>
             </Tab>
             <Tab text="Historico de prestamos">
               <content>
@@ -168,15 +215,29 @@
                            <columnResizePolicy>
                               <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                            </columnResizePolicy>
+                           <tooltip>
+                              <Tooltip text="Historial de prestamos" />
+                           </tooltip>
                         </TableView>
                         <HBox alignment="CENTER" prefHeight="82.0" prefWidth="814.0" spacing="25.0">
                            <children>
                               <Label text="Filtrar por:" />
-                              <ComboBox fx:id="cbFiltroHistorico" onAction="#filtrarHistorico" prefWidth="150.0" />
+                              <ComboBox fx:id="cbFiltroHistorico" onAction="#filtrarHistorico" prefHeight="26.0" prefWidth="222.0" promptText="Selecciona por que quieres filtrar">
+                                 <tooltip>
+                                    <Tooltip text="Selecciona porque se va a filtrar los registros" />
+                                 </tooltip></ComboBox>
+                              <TextField fx:id="tfFiltrarHistoricoPrestamo" onAction="#filtrarHistoricoPrestamo" prefHeight="0.0" prefWidth="239.0" promptText="Escribe segun lo que estes filtrando">
+                                 <tooltip>
+                                    <Tooltip text="Filtra por lo seleccionado en el checkbox" />
+                                 </tooltip>
+                              </TextField>
                            </children>
                         </HBox>
                      </children></AnchorPane>
               </content>
+               <tooltip>
+                  <Tooltip text="Gestionar el historico de prestamos" />
+               </tooltip>
             </Tab>
         </tabs>
       </TabPane>
