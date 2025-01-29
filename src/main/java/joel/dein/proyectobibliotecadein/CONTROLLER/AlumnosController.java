@@ -23,11 +23,21 @@ public class AlumnosController {
     private TextField tfSegundoApellidoAlumno;
 
     // Referencia al controlador principal
-
     private Runnable onCloseCallback;
+
+    private AlumnoModel alumnoSeleccionado; // Variable para almacenar el alumno a modificar
 
     public void setOnCloseCallback(Runnable onCloseCallback) {
         this.onCloseCallback = onCloseCallback;
+    }
+
+    // Método para cargar los datos del alumno en los TextFields
+    public void cargarDatosAlumno(AlumnoModel alumno) {
+        this.alumnoSeleccionado = alumno;
+        tfDniAlumno.setText(alumno.getDni());
+        tfNombreAlumno.setText(alumno.getNombre());
+        tfPrimerApellidoAlumno.setText(alumno.getApellido1());
+        tfSegundoApellidoAlumno.setText(alumno.getApellido2());
     }
 
     @FXML
@@ -74,25 +84,51 @@ public class AlumnosController {
             return;
         }
 
-        // Crear un objeto AlumnoModel
+        // Crear un objeto AlumnoModel con los nuevos datos
         AlumnoModel alumno = new AlumnoModel();
         alumno.setDni(dni);
         alumno.setNombre(nombre);
         alumno.setApellido1(primerApellido);
         alumno.setApellido2(segundoApellido);
 
-        // Insertar el alumno en la base de datos
-        try {
-            AlumnosDao.insertAlumno(alumno);
-            mostrarAlerta("Éxito", "El alumno ha sido registrado correctamente.");
+        // Verificar si realmente hay cambios en los datos
+        boolean hayCambios = !alumno.equals(alumnoSeleccionado);
 
-            // Cerrar la ventana después de guardar
+        if (!hayCambios) {
+            mostrarAlerta("Sin cambios", "No se han realizado cambios en los datos del alumno.");
             cancelar(event);
+            return;
+        }
 
-        } catch (Exception e) {
-            mostrarAlerta("Error", "No se pudo registrar el alumno: " + e.getMessage());
+        // Si es una inserción, verificar si el alumno ya existe
+        if (alumnoSeleccionado == null) {
+            if (AlumnosDao.existeAlumno(dni)) {
+                mostrarAlerta("Error", "Ya existe un alumno con el mismo DNI en la base de datos.");
+                return;
+            }
+
+            // Si no existe, insertar el nuevo alumno
+            try {
+                AlumnosDao.insertAlumno(alumno);
+                mostrarAlerta("Éxito", "El alumno ha sido registrado correctamente.");
+                cancelar(event);
+
+            } catch (Exception e) {
+                mostrarAlerta("Error", "No se pudo registrar el alumno: " + e.getMessage());
+            }
+        } else {
+            // Si es una modificación, actualizar el alumno en la base de datos
+            try {
+                AlumnosDao.updateAlumno(alumno);
+                mostrarAlerta("Éxito", "El alumno ha sido modificado correctamente.");
+                cancelar(event);
+
+            } catch (Exception e) {
+                mostrarAlerta("Error", "No se pudo modificar el alumno: " + e.getMessage());
+            }
         }
     }
+
 
     private void mostrarAlerta(String titulo, String mensaje) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);

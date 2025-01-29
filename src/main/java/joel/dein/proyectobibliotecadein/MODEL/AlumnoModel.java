@@ -57,13 +57,23 @@ public class AlumnoModel {
 
     @Override
     public boolean equals(Object o) {
+        // Verificamos si el objeto es null o si las clases no son iguales
+        if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
+
+        // Hacemos el casting al tipo AlumnoModel
         AlumnoModel alumno = (AlumnoModel) o;
-        return Objects.equals(dni, alumno.dni);
+
+        // Comparamos todos los campos
+        return Objects.equals(dni, alumno.dni) &&
+                Objects.equals(nombre, alumno.nombre) &&
+                Objects.equals(apellido1, alumno.apellido1) &&
+                Objects.equals(apellido2, alumno.apellido2);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(dni);
+        // Calculamos el hashCode considerando todos los campos
+        return Objects.hash(dni, nombre, apellido1, apellido2);
     }
 }

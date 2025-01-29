@@ -376,8 +376,27 @@ public class BibliotecaController implements Initializable {
 
     @FXML
     void modificarAlumno(ActionEvent event) {
-        // Este mtodo está vacío, indícalo si necesita alguna funcionalidad
+        // Obtener el alumno seleccionado
+        AlumnoModel alumnoSeleccionado = tablaAlumnos.getSelectionModel().getSelectedItem();
+
+        // Si no hay alumno seleccionado, mostramos un error
+        if (alumnoSeleccionado == null) {
+            mostrarAlerta("Error", "No has seleccionado ningún alumno", "Por favor, selecciona un alumno para modificar.");
+            return;
+        }
+
+        // Si el alumno está seleccionado, cargar la ventana de modificación
+        AlumnosController alumnosController = cargarPantalla("/JXML/alumnos.fxml", "Modificar Alumno");
+
+        if (alumnosController != null) {
+            // Pasar los datos del alumno seleccionado al controlador de la ventana de alumnos
+            alumnosController.cargarDatosAlumno(alumnoSeleccionado);
+
+            // Configurar el callback para actualizar la tabla cuando la ventana se cierre
+            alumnosController.setOnCloseCallback(this::cargarDatosTablas);
+        }
     }
+
 
     @FXML
     void bajaLibro(ActionEvent event) {
