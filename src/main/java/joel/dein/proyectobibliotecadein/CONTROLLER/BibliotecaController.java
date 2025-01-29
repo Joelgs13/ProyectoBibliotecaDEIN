@@ -353,11 +353,16 @@ public class BibliotecaController implements Initializable {
     }
 
     public void cargarInforme3(ActionEvent event) {
-        // Implementa la funcionalidad para cargar Informe 3
+        Map<String, Object> parameters = new HashMap<>();
+        parameters.put("IMAGE_PATH", getClass().getResource("/IMG/").toString());
+        parameters.put("SUBREPORT_PATH", getClass().getResource("/JASPERREPORTS/").toString());
+        generarReporte("/JASPERREPORTS/proyectoInforme3.jasper", parameters);
     }
 
     public void cargarInforme4(ActionEvent event) {
-        // Implementa la funcionalidad para cargar Informe 4
+        Map<String, Object> parameters = new HashMap<>();
+        parameters.put("IMAGE_PATH", getClass().getResource("/IMG/").toString());
+        generarReporte("/JASPERREPORTS/proyectoInforme4.jasper", parameters);
     }
 
     public void cargarGuia(ActionEvent event) {

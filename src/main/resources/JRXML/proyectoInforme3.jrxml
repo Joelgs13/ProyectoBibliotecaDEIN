@@ -6,6 +6,7 @@
 	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w2" value="861"/>
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="ContraDockerExamen1"/>
 	<parameter name="IMAGE_PATH" class="java.lang.String"/>
+	<parameter name="SUBREPORT_PATH" class="java.lang.String"/>
 	<queryString language="SQL">
 		<![CDATA[SELECT 
     libros.`Libro`.codigo  AS libro_id, 
@@ -85,12 +86,12 @@ ORDER BY
 			<subreport>
 				<reportElement x="30" y="250" width="70" height="50" uuid="3f9b4645-5c64-4b65-8d02-47c4d9a0fa69"/>
 				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
-				<subreportExpression><![CDATA["proyectoSubreporte3_1.jasper"]]></subreportExpression>
+				<subreportExpression><![CDATA[$P{SUBREPORT_PATH}+"proyectoSubreporte3_1.jasper"]]></subreportExpression>
 			</subreport>
 			<subreport>
 				<reportElement x="20" y="490" width="71" height="53" uuid="43ac652f-3b0f-4ce1-a3c7-e71753c693e0"/>
 				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
-				<subreportExpression><![CDATA["proyectoSubreporte3_2.jasper"]]></subreportExpression>
+				<subreportExpression><![CDATA[$P{SUBREPORT_PATH}+"proyectoSubreporte3_2.jasper"]]></subreportExpression>
 			</subreport>
 		</band>
 	</title>
@@ -130,7 +131,7 @@ ORDER BY
 			<subreport>
 				<reportElement x="10" y="70" width="67" height="67" uuid="4d9b5c13-4a88-463c-a0b4-4c0e220a3d1c"/>
 				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
-				<subreportExpression><![CDATA["proyectoSubreporte3_3.jasper"]]></subreportExpression>
+				<subreportExpression><![CDATA[$P{SUBREPORT_PATH}+"proyectoSubreporte3_3.jasper"]]></subreportExpression>
 			</subreport>
 		</band>
 	</summary>
