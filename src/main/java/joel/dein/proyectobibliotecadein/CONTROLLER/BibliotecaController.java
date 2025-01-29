@@ -2,6 +2,8 @@ package joel.dein.proyectobibliotecadein.CONTROLLER;
 
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -45,7 +47,7 @@ public class BibliotecaController implements Initializable {
     private TableColumn<LibroModel, ImageView> tcImagenTabLibros;
 
     @FXML
-    private ComboBox<?> cbFiltroHistorico;
+    private ComboBox<String> cbFiltroHistorico;
 
     @FXML
     private TableView<AlumnoModel> tablaAlumnos;
@@ -124,6 +126,13 @@ public class BibliotecaController implements Initializable {
         }
 
         cargarDatosTablas();
+        cargarFiltrosHistorico(); // Nuevo método para cargar el ComboBox
+    }
+
+    private void cargarFiltrosHistorico() {
+        ObservableList<String> filtros = FXCollections.observableArrayList("Por Título de libro", "Por DNI Del alumno");
+        cbFiltroHistorico.setItems(filtros);
+        cbFiltroHistorico.getSelectionModel().selectFirst(); // Seleccionar el primer valor por defecto
     }
 
     void cargarDatosTablas() {
@@ -153,6 +162,7 @@ public class BibliotecaController implements Initializable {
 
             return new SimpleObjectProperty<>(imageView);
         });
+
         // Tabla de préstamos
         List<PrestamoModel> prestamos = PrestamoDao.getTodosPrestamo();
         tablaPrestamos.getItems().setAll(prestamos);
@@ -166,7 +176,11 @@ public class BibliotecaController implements Initializable {
         tcFechaPrestamoTabHistoricoPrestamos.setCellValueFactory(new PropertyValueFactory<>("fecha_prestamo"));
         tcFechaDevolucionTabHistoricoPrestamos.setCellValueFactory(new PropertyValueFactory<>("fecha_devolucion"));
         tcAlumnoTabHistoricoPrestamos.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getAlumno().getDni()));
-        tcLibroTabHistoricoPrestamos.setCellValueFactory(cellData -> new SimpleStringProperty(String.valueOf(cellData.getValue().getLibro().getCodigo())));
+
+        // 🔹 Ahora muestra el título en lugar del código 🔹
+        tcLibroTabHistoricoPrestamos.setCellValueFactory(cellData ->
+                new SimpleStringProperty(cellData.getValue().getLibro().getTitulo())
+        );
     }
 
     private byte[] blobToBytes(Blob blob) {

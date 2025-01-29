@@ -31,7 +31,7 @@ public class PrestamoController {
         this.onCloseCallback = onCloseCallback;
     }
     /**
-     * Método que se ejecuta al inicializar la vista de préstamo.
+     * Metodo que se ejecuta al inicializar la vista de préstamo.
      */
     @FXML
     public void initialize() {
