@@ -222,7 +222,7 @@
                         <HBox alignment="CENTER" prefHeight="82.0" prefWidth="814.0" spacing="25.0">
                            <children>
                               <Label text="Filtrar por:" />
-                              <ComboBox fx:id="cbFiltroHistorico" onAction="#filtrarHistorico" prefHeight="26.0" prefWidth="222.0" promptText="Selecciona por que quieres filtrar">
+                              <ComboBox fx:id="cbFiltroHistorico" onAction="#filtrarHistoricoPrestamo" prefHeight="26.0" prefWidth="222.0" promptText="Selecciona por que quieres filtrar">
                                  <tooltip>
                                     <Tooltip text="Selecciona porque se va a filtrar los registros" />
                                  </tooltip></ComboBox>

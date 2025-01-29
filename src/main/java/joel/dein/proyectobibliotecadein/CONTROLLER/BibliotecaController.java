@@ -127,11 +127,6 @@ public class BibliotecaController implements Initializable {
         cargarFiltrosHistorico(); // Nuevo metodo para cargar el ComboBox
     }
 
-    private void cargarFiltrosHistorico() {
-        ObservableList<String> filtros = FXCollections.observableArrayList("Por Título de libro", "Por DNI Del alumno");
-        cbFiltroHistorico.setItems(filtros);
-        cbFiltroHistorico.getSelectionModel().selectFirst(); // Seleccionar el primer valor por defecto
-    }
 
     void cargarDatosTablas() {
         // Tabla de alumnos
@@ -291,8 +286,14 @@ public class BibliotecaController implements Initializable {
         tablaPrestamos.getItems().setAll(prestamosFiltrados);
     }
 
+    private void cargarFiltrosHistorico() {
+        ObservableList<String> filtros = FXCollections.observableArrayList("Por DNI Del alumno", "Por Título de libro");
+        cbFiltroHistorico.setItems(filtros);
+        cbFiltroHistorico.getSelectionModel().selectFirst(); // Seleccionar el primer valor por defecto
+    }
+
     @FXML
-    void filtrarHistorico(ActionEvent event) {
+    void filtrarHistoricoPrestamo(ActionEvent event) {
         String filtro = tfFiltrarHistoricoPrestamo.getText().trim().toLowerCase();
         String criterio = cbFiltroHistorico.getSelectionModel().getSelectedItem();
 
@@ -353,9 +354,5 @@ public class BibliotecaController implements Initializable {
 
     public void cargarGuia(ActionEvent event) {
         // Implementa la funcionalidad para cargar una guía
-    }
-
-
-    public void filtrarHistoricoPrestamo(ActionEvent event) {
     }
 }
