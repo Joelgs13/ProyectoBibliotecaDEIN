@@ -316,35 +316,6 @@ public class BibliotecaController implements Initializable {
         tablaHistorico.getItems().setAll(historicoFiltrado);
     }
 
-
-    @FXML
-    void modificarAlumno(ActionEvent event) {
-        // Este mtodo está vacío, indícalo si necesita alguna funcionalidad
-    }
-
-    @FXML
-    void bajaLibro(ActionEvent event) {
-        // Este mtodo está vacío, indícalo si necesita alguna funcionalidad
-    }
-
-    @FXML
-    void devolverLibro(ActionEvent event) {
-        // Este mtodo está vacío, indícalo si necesita alguna funcionalidad
-    }
-
-    @FXML
-    void modificarLibro(ActionEvent event) {
-        // Implementa aquí la funcionalidad para modificar un libro
-    }
-
-    public void idiomaEspaniol(ActionEvent event) {
-        // Implementa el cambio de idioma a español
-    }
-
-    public void idiomaIngles(ActionEvent event) {
-        // Implementa el cambio de idioma a inglés
-    }
-
     public void cargarInforme2(ActionEvent event) {
         Map<String, Object> parameters = new HashMap<>();
         parameters.put("IMAGE_PATH", getClass().getResource("/IMG/").toString());
@@ -402,4 +373,72 @@ public class BibliotecaController implements Initializable {
         alert.setContentText(mensaje);
         alert.showAndWait();
     }
+
+    @FXML
+    void modificarAlumno(ActionEvent event) {
+        // Este mtodo está vacío, indícalo si necesita alguna funcionalidad
+    }
+
+    @FXML
+    void bajaLibro(ActionEvent event) {
+        // Primero, obtenemos el libro seleccionado en la tabla
+        LibroModel libroSeleccionado = tablaLibros.getSelectionModel().getSelectedItem();
+
+        // Si no hay libro seleccionado, mostramos un mensaje de error
+        if (libroSeleccionado == null) {
+            mostrarAlerta("Error", "No has seleccionado ningún libro", "Por favor, selecciona un libro para dar de baja.");
+            return;
+        }
+
+        // Si hay libro seleccionado, mostramos una ventana emergente de confirmación
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Confirmación de Baja");
+        alert.setHeaderText("¿Estás seguro de que deseas dar de baja el libro?");
+        alert.setContentText("Libro: " + libroSeleccionado.getTitulo());
+
+        // Si el usuario confirma, llamamos al metodo bajaDelLibro
+        alert.showAndWait().ifPresent(response -> {
+            if (response == ButtonType.OK) {
+                // Llamamos al metodo bajaDelLibro para dar de baja el libro en la base de datos
+                boolean exito = LibroDao.bajaDelLibro(libroSeleccionado.getCodigo());
+
+                // Mostramos un mensaje dependiendo si la operación fue exitosa o no
+                if (exito) {
+                    mostrarAlerta("Éxito", "Libro dado de baja", "El libro ha sido dado de baja correctamente.");
+                    // Aquí podríamos actualizar la tabla para reflejar los cambios
+                    cargarDatosTablas();
+                } else {
+                    mostrarAlerta("Error", "No se pudo dar de baja el libro", "Hubo un error al intentar dar de baja el libro.");
+                }
+            }
+        });
+    }
+
+    // Metodo para mostrar alertas
+    private void mostrarAlerta(String titulo, String cabecera, String contenido) {
+        Alert alerta = new Alert(Alert.AlertType.INFORMATION);
+        alerta.setTitle(titulo);
+        alerta.setHeaderText(cabecera);
+        alerta.setContentText(contenido);
+        alerta.showAndWait();
+    }
+
+    @FXML
+    void devolverLibro(ActionEvent event) {
+        // Este mtodo está vacío, indícalo si necesita alguna funcionalidad
+    }
+
+    @FXML
+    void modificarLibro(ActionEvent event) {
+        // Implementa aquí la funcionalidad para modificar un libro
+    }
+
+    public void idiomaEspaniol(ActionEvent event) {
+        // Implementa el cambio de idioma a español
+    }
+
+    public void idiomaIngles(ActionEvent event) {
+        // Implementa el cambio de idioma a inglés
+    }
+
 }
