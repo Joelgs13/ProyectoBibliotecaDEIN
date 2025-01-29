@@ -90,8 +90,16 @@ public class LibroModel {
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
         LibroModel libroModel = (LibroModel) o;
-        return codigo == libroModel.codigo;
+
+        // Compara todos los campos excepto la imagen
+        return codigo == libroModel.codigo &&
+                Objects.equals(titulo, libroModel.titulo) &&
+                Objects.equals(autor, libroModel.autor) &&
+                Objects.equals(editorial, libroModel.editorial) &&
+                Objects.equals(estado, libroModel.estado) &&
+                baja == libroModel.baja;
     }
+
 
     @Override
     public int hashCode() {

@@ -13,6 +13,7 @@ import javafx.stage.Stage;
 import joel.dein.proyectobibliotecadein.DAO.LibroDao;
 import joel.dein.proyectobibliotecadein.MODEL.LibroModel;
 
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.InputStream;
@@ -23,9 +24,6 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 public class LibrosController {
-
-
-
     @FXML
     private CheckBox cbBajaLibro;
 
@@ -50,12 +48,20 @@ public class LibrosController {
 
     private byte[] imagenBytes; // Variable para almacenar la imagen como array de bytes
 
+
+    private LibroModel libroSeleccionado;
+
+    public void setLibroSeleccionado(LibroModel libroSeleccionado) {
+        this.libroSeleccionado = libroSeleccionado;
+        cargarDatosLibro(libroSeleccionado); // Cargar los datos del libro en los campos de la interfaz
+    }
+
     public void setOnCloseCallback(Runnable onCloseCallback) {
         this.onCloseCallback = onCloseCallback;
     }
 
     /**
-     * Método que se ejecuta al inicializar el controlador.
+     * Metodo que se ejecuta al inicializar el controlador.
      * Carga los valores en el ComboBox de estado.
      */
     @FXML
@@ -82,6 +88,48 @@ public class LibrosController {
         Stage stage = (Stage) tfTituloLibro.getScene().getWindow();
         stage.close();
     }
+
+    public void cargarDatosLibro(LibroModel libroSeleccionado) {
+        if (libroSeleccionado != null) {
+            // Rellenar los campos con los datos del libro seleccionado
+            tfTituloLibro.setText(libroSeleccionado.getTitulo());
+            tfAutorLibro.setText(libroSeleccionado.getAutor());
+            tfEditorialLibro.setText(libroSeleccionado.getEditorial());
+            cbEstadoLibro.setValue(libroSeleccionado.getEstado());
+            cbBajaLibro.setSelected(libroSeleccionado.getBaja() == 1);
+
+            // Cargar la imagen
+            byte[] imagenBytes = BlobABytes(libroSeleccionado.getImagen());
+            if (imagenBytes != null && imagenBytes.length > 0) {
+                Image image = new Image(new ByteArrayInputStream(imagenBytes));
+                ivImagenDePortada.setImage(image);
+                this.imagenBytes = imagenBytes;
+            } else {
+                ivImagenDePortada.setImage(new Image(String.valueOf(getClass().getResource(DEFAULT_IMAGE_PATH))));
+            }
+            System.out.print(libroSeleccionado.getCodigo());
+        }
+    }
+
+    public byte[] BlobABytes(java.sql.Blob blob) {
+        if (blob == null) {
+            return null;
+        }
+        try {
+            InputStream inputStream = blob.getBinaryStream();
+            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+            byte[] buffer = new byte[1024];
+            int bytesRead;
+            while ((bytesRead = inputStream.read(buffer)) != -1) {
+                outputStream.write(buffer, 0, bytesRead);
+            }
+            return outputStream.toByteArray();
+        } catch (Exception e) {
+            e.printStackTrace(); // Si ocurre un error, imprímelo para depurar
+            return null;
+        }
+    }
+
 
     @FXML
     void guardarCambios(ActionEvent event) {
@@ -130,16 +178,26 @@ public class LibrosController {
         // Convertir la imagen a Blob antes de insertar
         try {
             libro.setImagen(LibroDao.convertirABlob(imagenBytes));
-            LibroDao.insertLibro(libro);
-            mostrarAlerta("Éxito", "El libro ha sido registrado correctamente.");
+
+            // Si el libro tiene un ID, significa que es una edición, si no, es una inserción
+            if (libroSeleccionado != null && libroSeleccionado.getCodigo() != 0) {
+                libro.setCodigo(libroSeleccionado.getCodigo());  // Asignar el código del libro para editarlo
+                LibroDao.updateLibro(libro);
+                mostrarAlerta("Éxito", "El libro ha sido modificado correctamente.");
+            } else {
+                LibroDao.insertLibro(libro);
+                mostrarAlerta("Éxito", "El libro ha sido registrado correctamente.");
+            }
 
             // Cerrar la ventana después de guardar
             cancelar(event);
 
         } catch (Exception e) {
-            mostrarAlerta("Error", "No se pudo registrar el libro: " + e.getMessage());
+            mostrarAlerta("Error", "No se pudo registrar o modificar el libro: " + e.getMessage());
         }
     }
+
+
 
     @FXML
     void borrarImagen(ActionEvent event) {

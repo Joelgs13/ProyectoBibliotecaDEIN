@@ -241,7 +241,7 @@ public class BibliotecaController implements Initializable {
             alumnosController.setOnCloseCallback(this::cargarDatosTablas);
         }
     }
-
+    @FXML
     public void aniadirLibro(ActionEvent event) {
         LibrosController librosController = cargarPantalla("/JXML/libros.fxml", "Añadir Libro");
 
@@ -449,8 +449,25 @@ public class BibliotecaController implements Initializable {
 
     @FXML
     void modificarLibro(ActionEvent event) {
-        // Implementa aquí la funcionalidad para modificar un libro
+        // Obtener el libro seleccionado de la tabla
+        LibroModel libroSeleccionado = tablaLibros.getSelectionModel().getSelectedItem();
+
+        // Verificar si se ha seleccionado un libro
+        if (libroSeleccionado == null) {
+            mostrarAlerta("Error", "No has seleccionado ningún libro", "Por favor, selecciona un libro para modificar.");
+            return;
+        }
+
+        // Cargar la ventana de modificación con los datos del libro seleccionado
+        LibrosController librosController = cargarPantalla("/JXML/libros.fxml", "Modificar Libro");
+
+        if (librosController != null) {
+            // Pasar el libro seleccionado al controlador para modificarlo
+            librosController.setLibroSeleccionado(libroSeleccionado);
+        }
     }
+
+
 
     public void idiomaEspaniol(ActionEvent event) {
         // Implementa el cambio de idioma a español

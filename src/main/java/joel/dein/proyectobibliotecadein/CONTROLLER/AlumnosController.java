@@ -31,7 +31,7 @@ public class AlumnosController {
         this.onCloseCallback = onCloseCallback;
     }
 
-    // Método para cargar los datos del alumno en los TextFields
+    // Metodo para cargar los datos del alumno en los TextFields
     public void cargarDatosAlumno(AlumnoModel alumno) {
         this.alumnoSeleccionado = alumno;
         tfDniAlumno.setText(alumno.getDni());
