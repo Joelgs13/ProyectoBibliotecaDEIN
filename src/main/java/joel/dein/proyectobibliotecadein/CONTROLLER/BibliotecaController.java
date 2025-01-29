@@ -10,10 +10,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -27,6 +24,12 @@ import joel.dein.proyectobibliotecadein.MODEL.HistoricoPrestamoModel;
 import joel.dein.proyectobibliotecadein.MODEL.LibroModel;
 import joel.dein.proyectobibliotecadein.MODEL.PrestamoModel;
 import joel.dein.proyectobibliotecadein.BBDD.ConexionBBDD;
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.engine.util.JRLoader;
+import net.sf.jasperreports.view.JasperViewer;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -36,7 +39,9 @@ import java.net.URL;
 import java.sql.Blob;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
@@ -341,7 +346,10 @@ public class BibliotecaController implements Initializable {
     }
 
     public void cargarInforme2(ActionEvent event) {
-        // Implementa la funcionalidad para cargar Informe 2
+        Map<String, Object> parameters = new HashMap<>();
+        parameters.put("IMAGE_PATH", getClass().getResource("/IMG/").toString());
+        parameters.put("SUBREPORT_PATH", getClass().getResource("/JASPERREPORTS/").toString());
+        generarReporte("/JASPERREPORTS/proyectoInforme2.jasper", parameters);
     }
 
     public void cargarInforme3(ActionEvent event) {
@@ -354,5 +362,39 @@ public class BibliotecaController implements Initializable {
 
     public void cargarGuia(ActionEvent event) {
         // Implementa la funcionalidad para cargar una guía
+    }
+
+    private void generarReporte(String reportePath, Map<String, Object> parameters) {
+        try {
+            ConexionBBDD db = new ConexionBBDD();
+            InputStream reportStream = getClass().getResourceAsStream(reportePath);
+
+            if (reportStream == null) {
+                System.out.println("El archivo no está ahí: " + reportePath);
+                return;
+            }
+
+            JasperReport report = (JasperReport) JRLoader.loadObject(reportStream);
+            JasperPrint jprint = JasperFillManager.fillReport(report, parameters, db.getConnection());
+            JasperViewer viewer = new JasperViewer(jprint, false);
+            viewer.setVisible(true);
+
+        } catch (SQLException | JRException e) {
+            e.printStackTrace();
+            mostrarError("Error en la base de datos", "No se pudo conectar a la base de datos o generar el informe.");
+        }
+    }
+    /**
+     * Muestra un cuadro de diálogo con un mensaje de error.
+     *
+     * @param titulo  El título del cuadro de diálogo.
+     * @param mensaje El mensaje a mostrar en el cuadro de diálogo.
+     */
+    private void mostrarError(String titulo, String mensaje) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle(titulo);
+        alert.setHeaderText(null);
+        alert.setContentText(mensaje);
+        alert.showAndWait();
     }
 }

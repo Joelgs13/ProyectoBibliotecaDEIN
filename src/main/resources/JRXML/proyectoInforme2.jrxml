@@ -6,7 +6,7 @@
 	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w2" value="700"/>
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="ContraDockerExamen1"/>
 	<parameter name="IMAGE_PATH" class="java.lang.String"/>
-	<parameter name="RESOURCES_PATH" class="java.lang.String"/>
+	<parameter name="SUBREPORT_PATH" class="java.lang.String"/>
 	<queryString language="SQL">
 		<![CDATA[SELECT 
     libros.`Libro`.codigo AS libro_id,
@@ -152,7 +152,7 @@ FROM
 					<subreportParameterExpression><![CDATA[$F{libro_id}]]></subreportParameterExpression>
 				</subreportParameter>
 				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
-				<subreportExpression><![CDATA["proyectoSubreporte2.jasper"]]></subreportExpression>
+				<subreportExpression><![CDATA[$P{SUBREPORT_PATH}+"proyectoSubreporte2.jasper"]]></subreportExpression>
 			</subreport>
 		</band>
 	</detail>
