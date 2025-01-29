@@ -33,8 +33,8 @@
                <children>
                   <Label text="Nuevo estado del libro:" />
                   <Label text="Fecha de Devolucion:" GridPane.rowIndex="1" />
-                  <ComboBox fx:id="cbEstudiante" prefWidth="150.0" GridPane.columnIndex="1" />
-                  <DatePicker fx:id="doFechaPrestamo" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                  <ComboBox fx:id="cbEstadoLibro" prefWidth="150.0" GridPane.columnIndex="1" />
+                  <DatePicker fx:id="doFechaDevolucion" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                </children>
                <VBox.margin>
                   <Insets left="15.0" />

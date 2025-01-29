@@ -442,10 +442,7 @@ public class BibliotecaController implements Initializable {
         alerta.showAndWait();
     }
 
-    @FXML
-    void devolverLibro(ActionEvent event) {
-        // Este mtodo está vacío, indícalo si necesita alguna funcionalidad
-    }
+
 
     @FXML
     void modificarLibro(ActionEvent event) {
@@ -466,8 +463,28 @@ public class BibliotecaController implements Initializable {
             librosController.setLibroSeleccionado(libroSeleccionado);
         }
     }
+    @FXML
+    void devolverLibro(ActionEvent event) {
+        // Obtener el préstamo seleccionado en la tabla
+        PrestamoModel prestamoSeleccionado = tablaPrestamos.getSelectionModel().getSelectedItem();
 
+        // Verificar que se haya seleccionado un préstamo
+        if (prestamoSeleccionado == null) {
+            mostrarAlerta("Error", "No se pudo devolver el libro","Debes seleccionar un préstamo antes de devolver un libro.");
+            return;
+        }
 
+        // Cargar la pantalla de devolución
+        DevolucionController devolucionController = cargarPantalla("/JXML/devolucion.fxml", "Devolución de un libro");
+
+        if (devolucionController != null) {
+            // Pasar el préstamo seleccionado al controlador de devolución
+            devolucionController.setPrestamo(prestamoSeleccionado);
+
+            // Configurar el callback para actualizar la tabla al cerrar
+            devolucionController.setOnCloseCallback(this::cargarDatosTablas);
+        }
+    }
 
     public void idiomaEspaniol(ActionEvent event) {
         // Implementa el cambio de idioma a español

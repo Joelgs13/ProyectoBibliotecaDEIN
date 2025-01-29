@@ -220,4 +220,17 @@ public class LibroDao {
         }
         return false;
     }
+
+    public static boolean updateLibroEstado(int idLibro, String nuevoEstado) {
+        String sql = "UPDATE Libro SET estado = ? WHERE codigo = ?";
+        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setString(1, nuevoEstado);
+            pstmt.setInt(2, idLibro);
+            return pstmt.executeUpdate() > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
 }
