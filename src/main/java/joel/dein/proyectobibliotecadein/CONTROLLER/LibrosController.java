@@ -23,7 +23,12 @@ import java.util.Objects;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
+/**
+ * Controlador para gestionar la creación y modificación de libros en la interfaz de usuario.
+ * Permite editar los detalles de un libro, incluyendo título, autor, editorial, estado y la imagen de portada.
+ */
 public class LibrosController {
+
     @FXML
     private CheckBox cbBajaLibro;
 
@@ -51,11 +56,21 @@ public class LibrosController {
 
     private LibroModel libroSeleccionado;
 
+    /**
+     * Establece el libro seleccionado y carga sus datos en la interfaz de usuario.
+     *
+     * @param libroSeleccionado El libro que se va a editar.
+     */
     public void setLibroSeleccionado(LibroModel libroSeleccionado) {
         this.libroSeleccionado = libroSeleccionado;
         cargarDatosLibro(libroSeleccionado); // Cargar los datos del libro en los campos de la interfaz
     }
 
+    /**
+     * Establece un callback que se ejecutará cuando se cierre la ventana.
+     *
+     * @param onCloseCallback El callback que se ejecutará al cerrar la ventana.
+     */
     public void setOnCloseCallback(Runnable onCloseCallback) {
         this.onCloseCallback = onCloseCallback;
     }
@@ -77,6 +92,11 @@ public class LibrosController {
 
     }
 
+    /**
+     * Cancela la operación actual y cierra la ventana del libro.
+     *
+     * @param event El evento que dispara la acción de cancelar.
+     */
     @FXML
     void cancelar(ActionEvent event) {
         // Ejecutar el callback si está configurado
@@ -89,6 +109,11 @@ public class LibrosController {
         stage.close();
     }
 
+    /**
+     * Carga los datos de un libro seleccionado en los campos correspondientes de la interfaz.
+     *
+     * @param libroSeleccionado El libro cuyos datos se van a cargar.
+     */
     public void cargarDatosLibro(LibroModel libroSeleccionado) {
         if (libroSeleccionado != null) {
             // Rellenar los campos con los datos del libro seleccionado
@@ -111,6 +136,12 @@ public class LibrosController {
         }
     }
 
+    /**
+     * Convierte un Blob de imagen a un array de bytes.
+     *
+     * @param blob El Blob de imagen a convertir.
+     * @return El array de bytes resultante de la conversión.
+     */
     public byte[] BlobABytes(java.sql.Blob blob) {
         if (blob == null) {
             return null;
@@ -130,7 +161,12 @@ public class LibrosController {
         }
     }
 
-
+    /**
+     * Guarda los cambios realizados en los datos del libro.
+     * Si el libro ya existe, se actualiza; si no, se inserta un nuevo libro.
+     *
+     * @param event El evento que dispara la acción de guardar cambios.
+     */
     @FXML
     void guardarCambios(ActionEvent event) {
         StringBuilder errores = new StringBuilder();
@@ -197,8 +233,11 @@ public class LibrosController {
         }
     }
 
-
-
+    /**
+     * Borra la imagen de portada del libro y la reemplaza por la imagen por defecto.
+     *
+     * @param event El evento que dispara la acción de borrar la imagen.
+     */
     @FXML
     void borrarImagen(ActionEvent event) {
         // Establecer la imagen por defecto y su representación en bytes
@@ -206,6 +245,11 @@ public class LibrosController {
         imagenBytes = convertirImagenABytes(new Image(String.valueOf(getClass().getResource(DEFAULT_IMAGE_PATH))));
     }
 
+    /**
+     * Permite al usuario seleccionar una imagen desde su sistema de archivos para el libro.
+     *
+     * @param event El evento que dispara la acción de añadir una imagen.
+     */
     @FXML
     void aniadirImagen(ActionEvent event) {
         // Abrir un explorador de archivos para seleccionar una imagen
@@ -238,9 +282,11 @@ public class LibrosController {
         }
     }
 
-
     /**
-     * Método para convertir una imagen a un array de bytes.
+     * Metodo para convertir una imagen a un array de bytes.
+     *
+     * @param image La imagen que se va a convertir.
+     * @return El array de bytes resultante de la conversión.
      */
     private byte[] convertirImagenABytes(Image image) {
         try {
@@ -264,7 +310,12 @@ public class LibrosController {
         }
     }
 
-
+    /**
+     * Muestra una alerta con un título y un mensaje en la interfaz de usuario.
+     *
+     * @param titulo   El título de la alerta.
+     * @param mensaje  El mensaje de la alerta.
+     */
     private void mostrarAlerta(String titulo, String mensaje) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle(titulo);

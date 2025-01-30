@@ -21,12 +21,16 @@ import net.sf.jasperreports.view.JasperViewer;
 import java.io.InputStream;
 import java.sql.SQLException;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Controlador para la gestión de préstamos de libros. Permite registrar nuevos préstamos,
+ * validar la información proporcionada por el usuario y generar un reporte con la información
+ * del préstamo.
+ */
 public class PrestamoController {
 
     @FXML
@@ -39,11 +43,18 @@ public class PrestamoController {
     private DatePicker doFechaPrestamo;
 
     private Runnable onCloseCallback;
+
+    /**
+     * Establece el callback que se ejecutará cuando se cierre la ventana.
+     *
+     * @param onCloseCallback El callback que se ejecutará al cerrar la ventana.
+     */
     public void setOnCloseCallback(Runnable onCloseCallback) {
         this.onCloseCallback = onCloseCallback;
     }
+
     /**
-     * Metodo que se ejecuta al inicializar la vista de préstamo.
+     * Método que se ejecuta al inicializar la vista de préstamo. Carga los estudiantes y los libros disponibles.
      */
     @FXML
     public void initialize() {
@@ -66,7 +77,9 @@ public class PrestamoController {
     }
 
     /**
-     * Cancela la operación y cierra la ventana.
+     * Cancela la operación de préstamo y cierra la ventana.
+     *
+     * @param event El evento que dispara la acción de cancelar.
      */
     @FXML
     void cancelar(ActionEvent event) {
@@ -78,7 +91,9 @@ public class PrestamoController {
     }
 
     /**
-     * Guarda los cambios realizando las validaciones necesarias.
+     * Guarda el préstamo, realiza las validaciones necesarias y muestra los mensajes adecuados.
+     *
+     * @param event El evento que dispara la acción de guardar el préstamo.
      */
     @FXML
     void guardarCambios(ActionEvent event) {
@@ -124,7 +139,6 @@ public class PrestamoController {
             // Preparar los parámetros para el reporte
             Map<String, Object> parameters = new HashMap<>();
             parameters.put("IMAGE_PATH", getClass().getResource("/IMG/").toString());
-            //System.out.print(idPrestamo); //DEVUELVE 0!!!
             parameters.put("ID_PRESTAMO", idPrestamo);  // Pasar el ID del préstamo
 
             // Generar el reporte
@@ -136,7 +150,12 @@ public class PrestamoController {
         }
     }
 
-
+    /**
+     * Genera un reporte en base al archivo JasperReport proporcionado y los parámetros dados.
+     *
+     * @param reportePath La ruta del archivo JasperReport.
+     * @param parameters Los parámetros necesarios para el reporte.
+     */
     private void generarReporte(String reportePath, Map<String, Object> parameters) {
         try {
             ConexionBBDD db = new ConexionBBDD();

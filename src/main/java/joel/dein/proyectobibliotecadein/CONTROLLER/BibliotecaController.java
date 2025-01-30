@@ -42,6 +42,10 @@ import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
+/**
+ * Controlador principal de la biblioteca. Se encarga de gestionar la interfaz de usuario
+ * y la interacción con la base de datos en el sistema de préstamos de libros.
+ */
 public class BibliotecaController implements Initializable {
     @FXML
     public TextField tfFiltrarHistoricoPrestamo;
@@ -116,6 +120,12 @@ public class BibliotecaController implements Initializable {
 
     @FXML
     private TableColumn<LibroModel, String> tcTituloTabLibros;
+    /**
+     * Metodo de inicialización del controlador.
+     *
+     * @param location  La URL de localización.
+     * @param resources Recursos adicionales.
+     */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         System.out.println("iniciando...");
@@ -130,6 +140,9 @@ public class BibliotecaController implements Initializable {
     }
 
 
+    /**
+     * Carga los datos de las tablas desde la base de datos.
+     */
     void cargarDatosTablas() {
         // Tabla de alumnos
         List<AlumnoModel> alumnos = AlumnosDao.getTodosAlumnos();
@@ -178,6 +191,12 @@ public class BibliotecaController implements Initializable {
         );
     }
 
+    /**
+     * Convierte un objeto Blob en un array de bytes.
+     *
+     * @param blob El objeto Blob a convertir.
+     * @return Un array de bytes representando la imagen.
+     */
     private byte[] blobToBytes(Blob blob) {
         if (blob == null) {
             return null; // Si el blob es nulo, devolvemos null
@@ -197,6 +216,12 @@ public class BibliotecaController implements Initializable {
         }
     }
 
+    /**
+     * Convierte un array de bytes en una imagen.
+     *
+     * @param imageBytes El array de bytes que representa la imagen.
+     * @return Un objeto de tipo Image.
+     */
     private Image blobToImage(byte[] imageBytes) {
         if (imageBytes == null || imageBytes.length == 0) {
             // Si no hay imagen, usar una imagen por defecto
@@ -207,9 +232,14 @@ public class BibliotecaController implements Initializable {
     }
 
 
-    /*
-    * Metodo que sirve para cargar una nueva pantalla
-    * */
+    /**
+     * Carga una nueva pantalla.
+     *
+     * @param rutaFXML Ruta del archivo FXML.
+     * @param titulo   Título de la nueva ventana.
+     * @param <T>      Tipo del controlador de la pantalla cargada.
+     * @return El controlador de la nueva pantalla.
+     */
     private <T> T cargarPantalla(String rutaFXML, String titulo) {
         try {
             Properties properties = ConexionBBDD.cargarIdioma();
@@ -234,7 +264,12 @@ public class BibliotecaController implements Initializable {
         }
     }
 
-
+    /**
+     * Metodo encargado de abrir la pantalla para añadir un nuevo alumno.
+     * Al cerrar la pantalla, se recargan los datos de la tabla de alumnos.
+     *
+     * @param event El evento generado por el botón de añadir alumno.
+     */
     @FXML
     void aniadirAlumno(ActionEvent event) {
         AlumnosController alumnosController = cargarPantalla("/JXML/alumnos.fxml", "Añadir Alumno");
@@ -244,6 +279,13 @@ public class BibliotecaController implements Initializable {
             alumnosController.setOnCloseCallback(this::cargarDatosTablas);
         }
     }
+
+    /**
+     * Metodo encargado de abrir la pantalla para añadir un nuevo libro.
+     * Al cerrar la pantalla, se recargan los datos de la tabla de libros.
+     *
+     * @param event El evento generado por el botón de añadir libro.
+     */
     @FXML
     public void aniadirLibro(ActionEvent event) {
         LibrosController librosController = cargarPantalla("/JXML/libros.fxml", "Añadir Libro");
@@ -252,6 +294,13 @@ public class BibliotecaController implements Initializable {
             librosController.setOnCloseCallback(this::cargarDatosTablas);
         }
     }
+
+    /**
+     * Metodo encargado de abrir la pantalla para gestionar un préstamo de libro.
+     * Al cerrar la pantalla, se recargan los datos de la tabla de préstamos.
+     *
+     * @param event El evento generado por el botón de prestar libro.
+     */
     @FXML
     void prestarLibro(ActionEvent event) {
         PrestamoController prestamoController = cargarPantalla("/JXML/prestamo.fxml", "Prestar Libro");
@@ -261,6 +310,11 @@ public class BibliotecaController implements Initializable {
         }
     }
 
+    /**
+     * Filtra la tabla de alumnos por nombre según el texto ingresado en el campo de búsqueda.
+     *
+     * @param event El evento generado por el campo de búsqueda de alumnos.
+     */
     @FXML
     void filtrarAlumno(ActionEvent event) {
         String filtro = tfFiltrarAlumno.getText().trim().toLowerCase();
@@ -272,6 +326,11 @@ public class BibliotecaController implements Initializable {
         tablaAlumnos.getItems().setAll(alumnosFiltrados);
     }
 
+    /**
+     * Filtra la tabla de libros por título según el texto ingresado en el campo de búsqueda.
+     *
+     * @param event El evento generado por el campo de búsqueda de libros.
+     */
     @FXML
     void filtrarLibros(ActionEvent event) {
         String filtro = tfFiltrarLibros.getText().trim().toLowerCase();
@@ -283,6 +342,11 @@ public class BibliotecaController implements Initializable {
         tablaLibros.getItems().setAll(librosFiltrados);
     }
 
+    /**
+     * Filtra la tabla de préstamos por fecha según el texto ingresado en el campo de búsqueda.
+     *
+     * @param event El evento generado por el campo de búsqueda de préstamos.
+     */
     @FXML
     void filtrarPrestamo(ActionEvent event) {
         String filtro = tfFiltrarPrestamo.getText().trim();
@@ -294,12 +358,20 @@ public class BibliotecaController implements Initializable {
         tablaPrestamos.getItems().setAll(prestamosFiltrados);
     }
 
+    /**
+     * Configura el filtro para la tabla de historial de préstamos, permitiendo filtrar por DNI de alumno o título de libro.
+     */
     private void cargarFiltrosHistorico() {
         ObservableList<String> filtros = FXCollections.observableArrayList("Por DNI Del alumno", "Por Título de libro");
         cbFiltroHistorico.setItems(filtros);
         cbFiltroHistorico.getSelectionModel().selectFirst(); // Seleccionar el primer valor por defecto
     }
 
+    /**
+     * Filtra la tabla de historial de préstamos según el texto ingresado y el criterio seleccionado.
+     *
+     * @param event El evento generado por el campo de búsqueda de historial de préstamos.
+     */
     @FXML
     void filtrarHistoricoPrestamo(ActionEvent event) {
         String filtro = tfFiltrarHistoricoPrestamo.getText().trim().toLowerCase();
@@ -319,6 +391,11 @@ public class BibliotecaController implements Initializable {
         tablaHistorico.getItems().setAll(historicoFiltrado);
     }
 
+    /**
+     * Genera el informe con base en el reporte Jasper proporcionado y los parámetros definidos.
+     *
+     * @param event El evento generado por el botón para cargar el informe 2.
+     */
     public void cargarInforme2(ActionEvent event) {
         Map<String, Object> parameters = new HashMap<>();
         parameters.put("IMAGE_PATH", getClass().getResource("/IMG/").toString());
@@ -326,6 +403,11 @@ public class BibliotecaController implements Initializable {
         generarReporte("/JASPERREPORTS/proyectoInforme2.jasper", parameters);
     }
 
+    /**
+     * Genera el informe con base en el reporte Jasper proporcionado y los parámetros definidos.
+     *
+     * @param event El evento generado por el botón para cargar el informe 3.
+     */
     public void cargarInforme3(ActionEvent event) {
         Map<String, Object> parameters = new HashMap<>();
         parameters.put("IMAGE_PATH", getClass().getResource("/IMG/").toString());
@@ -333,16 +415,33 @@ public class BibliotecaController implements Initializable {
         generarReporte("/JASPERREPORTS/proyectoInforme3.jasper", parameters);
     }
 
+    /**
+     * Genera el informe con base en el reporte Jasper proporcionado y los parámetros definidos.
+     *
+     * @param event El evento generado por el botón para cargar el informe 4.
+     */
     public void cargarInforme4(ActionEvent event) {
         Map<String, Object> parameters = new HashMap<>();
         parameters.put("IMAGE_PATH", getClass().getResource("/IMG/").toString());
         generarReporte("/JASPERREPORTS/proyectoInforme4.jasper", parameters);
     }
 
+    /**
+     * Metodo encargado de cargar una guía o manual.
+     *
+     * @param event El evento generado por el botón para cargar una guía.
+     */
+
     public void cargarGuia(ActionEvent event) {
         // Implementa la funcionalidad para cargar una guía
     }
 
+    /**
+     * Genera y muestra un reporte en formato Jasper.
+     *
+     * @param reportePath El path del reporte Jasper.
+     * @param parameters Los parámetros a incluir en el reporte.
+     */
     private void generarReporte(String reportePath, Map<String, Object> parameters) {
         try {
             ConexionBBDD db = new ConexionBBDD();
@@ -377,6 +476,12 @@ public class BibliotecaController implements Initializable {
         alert.showAndWait();
     }
 
+    /**
+     * Metodo encargado de abrir la ventana para modificar un alumno seleccionado.
+     * Al cerrar la pantalla, se recargan los datos de la tabla de alumnos.
+     *
+     * @param event El evento generado por el botón de modificar alumno.
+     */
     @FXML
     void modificarAlumno(ActionEvent event) {
         // Obtener el alumno seleccionado
@@ -400,7 +505,12 @@ public class BibliotecaController implements Initializable {
         }
     }
 
-
+    /**
+     * Metodo encargado de dar de baja un libro seleccionado.
+     * Muestra un cuadro de confirmación antes de realizar la acción.
+     *
+     * @param event El evento generado por el botón de baja de libro.
+     */
     @FXML
     void bajaLibro(ActionEvent event) {
         // Primero, obtenemos el libro seleccionado en la tabla
@@ -436,7 +546,14 @@ public class BibliotecaController implements Initializable {
         });
     }
 
-    // Metodo para mostrar alertas
+
+    /**
+     * Metodo para mostrar alertas informativas.
+     *
+     * @param titulo El título de la alerta.
+     * @param cabecera El texto de la cabecera.
+     * @param contenido El contenido principal de la alerta.
+     */
     private void mostrarAlerta(String titulo, String cabecera, String contenido) {
         Alert alerta = new Alert(Alert.AlertType.INFORMATION);
         alerta.setTitle(titulo);
@@ -446,7 +563,12 @@ public class BibliotecaController implements Initializable {
     }
 
 
-
+    /**
+     * Metodo encargado de abrir la pantalla para modificar un libro seleccionado.
+     * Si no hay libro seleccionado, muestra un mensaje de error.
+     *
+     * @param event El evento generado por el botón de modificar libro.
+     */
     @FXML
     void modificarLibro(ActionEvent event) {
         // Obtener el libro seleccionado de la tabla
@@ -465,7 +587,18 @@ public class BibliotecaController implements Initializable {
             // Pasar el libro seleccionado al controlador para modificarlo
             librosController.setLibroSeleccionado(libroSeleccionado);
         }
+
+        if (librosController != null){
+            librosController.setOnCloseCallback(this::cargarDatosTablas);
+        }
     }
+
+    /**
+     * Metodo encargado de gestionar la devolución de un libro prestado.
+     * Al seleccionar un préstamo, se abre la pantalla de devolución y se pasa el préstamo seleccionado.
+     *
+     * @param event El evento generado por el botón de devolución de libro.
+     */
     @FXML
     void devolverLibro(ActionEvent event) {
         // Obtener el préstamo seleccionado en la tabla
@@ -489,18 +622,43 @@ public class BibliotecaController implements Initializable {
         }
     }
 
+
+    /**
+     * Metodo que cambia el idioma de la aplicación a español.
+     * Este metodo se llama cuando el usuario selecciona el idioma español.
+     * Al activarse, se guarda el idioma "es" en la base de datos y luego se
+     * actualiza la ventana para reflejar el cambio de idioma.
+     *
+     * @param event El evento que activa este metodo (generalmente un clic en un botón).
+     */
     public void idiomaEspaniol(ActionEvent event) {
         ConexionBBDD.guardarIdioma("es");
         Stage stage = (Stage) tfFiltrarAlumno.getScene().getWindow();
         this.actualizarVentana(stage);
     }
-
+    /**
+     * Metodo que cambia el idioma de la aplicación a inglés.
+     * Este metodo se llama cuando el usuario selecciona el idioma inglés.
+     * Al activarse, se guarda el idioma "en" en la base de datos y luego se
+     * actualiza la ventana para reflejar el cambio de idioma.
+     *
+     * @param event El evento que activa este metodo (generalmente un clic en un botón).
+     */
     public void idiomaIngles(ActionEvent event) {
         ConexionBBDD.guardarIdioma("en");
         Stage stage = (Stage) tfFiltrarAlumno.getScene().getWindow();
         this.actualizarVentana(stage);
     }
 
+    /**
+     * Actualiza la ventana actual con el nuevo idioma seleccionado.
+     * Este metodo recarga el archivo FXML correspondiente y aplica el nuevo idioma
+     * a la interfaz de usuario, obteniendo las traducciones desde un
+     * `ResourceBundle`. El idioma se carga desde la base de datos y se aplica
+     * a la ventana principal.
+     *
+     * @param stage El escenario (ventana) que se actualizará con el nuevo idioma.
+     */
     public void actualizarVentana(Stage stage) {
         try {
             // Cargar las propiedades de idioma y establecer el nuevo locale
@@ -522,6 +680,15 @@ public class BibliotecaController implements Initializable {
         }
     }
 
+    /**
+     * Muestra información sobre la aplicación en una ventana emergente.
+     * Este metodo se llama cuando el usuario selecciona la opción "Acerca de" en
+     * el menú. Muestra una ventana con detalles acerca de la aplicación, como el
+     * nombre del autor, la fecha de inicio del desarrollo y una breve descripción
+     * de la funcionalidad.
+     *
+     * @param event El evento que activa este metodo (generalmente un clic en un botón).
+     */
     @FXML
     public void cargarAcercaDe(ActionEvent event) {
         // Crear la ventana de alerta

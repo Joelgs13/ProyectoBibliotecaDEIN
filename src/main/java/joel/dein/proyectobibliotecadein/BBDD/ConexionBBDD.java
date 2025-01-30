@@ -46,7 +46,17 @@ public class ConexionBBDD {
         return connection;
     }
 
-
+    /**
+     * Carga el archivo de propiedades que contiene la configuración del idioma.
+     * <p>
+     * El archivo "idioma.properties" se lee desde el sistema de archivos y se cargan
+     * sus propiedades en un objeto {@link Properties}. Si ocurre un error al leer el
+     * archivo, se captura la excepción y se imprime la traza de error.
+     * </p>
+     *
+     * @return Un objeto {@link Properties} con las configuraciones del idioma cargadas,
+     *         o {@code null} si ocurre un error al leer el archivo.
+     */
     public static Properties cargarIdioma() {
         try (FileInputStream fs = new FileInputStream("idioma.properties")) {
             Properties props = new Properties();

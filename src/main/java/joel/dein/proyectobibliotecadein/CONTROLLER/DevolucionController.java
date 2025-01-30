@@ -16,6 +16,11 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 
+/**
+ * Controlador para la devolución de libros en la biblioteca.
+ * Este controlador maneja la interfaz de usuario para procesar la devolución de un libro,
+ * actualizar su estado y registrar el evento en el historial de préstamos.
+ */
 public class DevolucionController {
 
     @FXML
@@ -27,6 +32,9 @@ public class DevolucionController {
     private PrestamoModel prestamoSeleccionado;
     private Runnable onCloseCallback;
 
+    /**
+     * Inicializa el controlador, configurando los posibles estados de un libro.
+     */
     @FXML
     public void initialize() {
         // Cargar los estados posibles del libro en el ComboBox
@@ -35,6 +43,11 @@ public class DevolucionController {
         );
     }
 
+    /**
+     * Establece el préstamo seleccionado en el controlador y ajusta la interfaz según los datos del préstamo.
+     *
+     * @param prestamo El préstamo seleccionado que se va a procesar.
+     */
     public void setPrestamo(PrestamoModel prestamo) {
         this.prestamoSeleccionado = prestamo;
         if (prestamo != null) {
@@ -43,11 +56,23 @@ public class DevolucionController {
         }
     }
 
+    /**
+     * Cancela la devolución y cierra la ventana actual.
+     *
+     * @param event El evento que dispara la acción de cancelar.
+     */
     @FXML
     void cancelar(ActionEvent event) {
         cerrarVentana();
     }
 
+    /**
+     * Guarda los cambios realizados en la devolución del libro.
+     * El proceso incluye validar la fecha de devolución, eliminar el préstamo,
+     * actualizar el estado del libro y registrar la devolución en el historial de préstamos.
+     *
+     * @param event El evento que dispara la acción de guardar cambios.
+     */
     @FXML
     void guardarCambios(ActionEvent event) {
         if (prestamoSeleccionado == null) {
@@ -107,6 +132,9 @@ public class DevolucionController {
         cerrarVentana();
     }
 
+    /**
+     * Cierra la ventana actual y ejecuta la callback asociada, si existe.
+     */
     private void cerrarVentana() {
         if (onCloseCallback != null) {
             onCloseCallback.run();
@@ -115,6 +143,13 @@ public class DevolucionController {
         stage.close();
     }
 
+    /**
+     * Muestra una ventana emergente de alerta con un mensaje y título proporcionados.
+     *
+     * @param titulo  El título de la alerta.
+     * @param mensaje El mensaje de la alerta.
+     * @param tipo    El tipo de la alerta (por ejemplo, ERROR, INFORMATION).
+     */
     private void mostrarAlerta(String titulo, String mensaje, Alert.AlertType tipo) {
         Alert alert = new Alert(tipo);
         alert.setTitle(titulo);
@@ -123,6 +158,11 @@ public class DevolucionController {
         alert.showAndWait();
     }
 
+    /**
+     * Establece la callback que se ejecutará cuando se cierre la ventana.
+     *
+     * @param callback La función que se ejecutará al cerrar la ventana.
+     */
     public void setOnCloseCallback(Runnable callback) {
         this.onCloseCallback = callback;
     }

@@ -8,6 +8,13 @@ import javafx.stage.Stage;
 import joel.dein.proyectobibliotecadein.DAO.AlumnosDao;
 import joel.dein.proyectobibliotecadein.MODEL.AlumnoModel;
 
+/**
+ * Controlador para la gestión de alumnos en la biblioteca.
+ * <p>
+ * Permite añadir y modificar alumnos mediante una interfaz gráfica.
+ * Realiza validaciones de datos y gestiona la comunicación con la base de datos.
+ * </p>
+ */
 public class AlumnosController {
 
     @FXML
@@ -27,11 +34,20 @@ public class AlumnosController {
 
     private AlumnoModel alumnoSeleccionado; // Variable para almacenar el alumno a modificar
 
+    /**
+     * Establece un callback que se ejecutará cuando la ventana se cierre.
+     *
+     * @param onCloseCallback Acción a ejecutar al cerrar la ventana.
+     */
     public void setOnCloseCallback(Runnable onCloseCallback) {
         this.onCloseCallback = onCloseCallback;
     }
 
-    // Metodo para cargar los datos del alumno en los TextFields
+    /**
+     * Carga los datos de un alumno en los campos de texto de la interfaz.
+     *
+     * @param alumno El {@link AlumnoModel} con los datos del alumno a cargar.
+     */
     public void cargarDatosAlumno(AlumnoModel alumno) {
         this.alumnoSeleccionado = alumno;
         tfDniAlumno.setText(alumno.getDni());
@@ -40,6 +56,11 @@ public class AlumnosController {
         tfSegundoApellidoAlumno.setText(alumno.getApellido2());
     }
 
+    /**
+     * Cierra la ventana actual sin realizar cambios.
+     *
+     * @param event Evento de acción al presionar el botón "Cancelar".
+     */
     @FXML
     void cancelar(ActionEvent event) {
         // Ejecutar el callback si está configurado
@@ -52,6 +73,15 @@ public class AlumnosController {
         stage.close();
     }
 
+    /**
+     * Guarda un nuevo alumno en la base de datos o actualiza uno existente.
+     * <p>
+     * Valida los datos ingresados y verifica si el alumno ya existe antes de insertarlo.
+     * Si el alumno ya está registrado, actualiza la información en la base de datos.
+     * </p>
+     *
+     * @param event Evento de acción al presionar el botón "Guardar".
+     */
     @FXML
     void guardarAlumno(ActionEvent event) {
         StringBuilder errores = new StringBuilder();
@@ -129,7 +159,12 @@ public class AlumnosController {
         }
     }
 
-
+    /**
+     * Muestra una alerta en la interfaz gráfica con un mensaje informativo.
+     *
+     * @param titulo  El título de la alerta.
+     * @param mensaje El mensaje a mostrar en la alerta.
+     */
     private void mostrarAlerta(String titulo, String mensaje) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle(titulo);
