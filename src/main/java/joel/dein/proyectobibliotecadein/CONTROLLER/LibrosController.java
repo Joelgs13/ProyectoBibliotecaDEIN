@@ -107,7 +107,7 @@ public class LibrosController {
             } else {
                 ivImagenDePortada.setImage(new Image(String.valueOf(getClass().getResource(DEFAULT_IMAGE_PATH))));
             }
-            System.out.print(libroSeleccionado.getCodigo());
+            //System.out.print(libroSeleccionado.getCodigo());
         }
     }
 

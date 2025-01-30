@@ -3,6 +3,7 @@ package joel.dein.proyectobibliotecadein;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.stage.Stage;
 import joel.dein.proyectobibliotecadein.BBDD.ConexionBBDD;
 
@@ -24,31 +25,53 @@ public class PantallaBiblioteca extends Application {
      * Carga el archivo FXML para la interfaz de la biblioteca y muestra la ventana principal.
      *
      * @param s El escenario principal que se utiliza para mostrar la interfaz.
-     * @throws IOException Si ocurre un error al cargar el archivo FXML.
      */
     @Override
-    public void start(Stage s) throws IOException {
-        Properties connConfig = ConexionBBDD.loadProperties();  // Carga la configuración de conexión a la base de datos
+    public void start(Stage s) {
+        try {
+            Properties connConfig = ConexionBBDD.loadProperties();  // Carga la configuración de conexión a la base de datos
+            stage = s;  // Establece el escenario principal
 
-        stage = s;  // Establece el escenario principal
+            Properties properties = ConexionBBDD.cargarIdioma();
+            String lang = properties.getProperty("language");
 
-        Properties properties = ConexionBBDD.cargarIdioma();
-        String lang = properties.getProperty("language");
+            // Cargar el recurso de idioma adecuado utilizando el archivo de propiedades
+            Locale locale = new Locale(lang);
+            ResourceBundle bundle = ResourceBundle.getBundle("LANGUAGES/lang", locale);
 
-// Cargar el recurso de idioma adecuado utilizando el archivo de propiedades
-        Locale locale = new Locale(lang);
-        ResourceBundle bundle = ResourceBundle.getBundle("LANGUAGES/lang", locale);
-        // Cargar el archivo FXML para la interfaz de la biblioteca
-        FXMLLoader fxmlLoader = new FXMLLoader(PantallaBiblioteca.class.getResource("/JXML/biblioteca.fxml"), bundle);
+            // Cargar el archivo FXML para la interfaz de la biblioteca
+            FXMLLoader fxmlLoader = new FXMLLoader(PantallaBiblioteca.class.getResource("/JXML/biblioteca.fxml"), bundle);
 
-        // Crear la escena con el archivo FXML cargado
-        Scene scene = new Scene(fxmlLoader.load());
+            // Crear la escena con el archivo FXML cargado
+            Scene scene = new Scene(fxmlLoader.load());
 
-        // Configurar la ventana
-        stage.setTitle("Mi Biblioteca!");  // Establece el título de la ventana
-        stage.setResizable(false);
-        stage.setScene(scene);  // Establece la escena en el escenario
-        stage.show();  // Muestra la ventana
+            // Configurar la ventana
+            stage.setTitle("Mi Biblioteca!");  // Establece el título de la ventana
+            stage.setResizable(false);
+            stage.setScene(scene);  // Establece la escena en el escenario
+            stage.show();  // Muestra la ventana
+
+        } catch (IOException e) {
+            mostrarErrorYSalir("Error en la base de datos", "No se pudo conectar a la base de datos. La aplicación se cerrará.");
+        } catch (Exception e) {
+            mostrarErrorYSalir("Error inesperado", "Ocurrió un error inesperado. La aplicación se cerrará.");
+        }
+    }
+
+    /**
+     * Metodo para mostrar una ventana emergente de error y cerrar la aplicación.
+     *
+     * @param titulo  Título del cuadro de diálogo.
+     * @param mensaje Mensaje a mostrar en la alerta.
+     */
+    private void mostrarErrorYSalir(String titulo, String mensaje) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle(titulo);
+        alert.setHeaderText(null);
+        alert.setContentText(mensaje);
+        alert.showAndWait(); // Muestra la alerta y espera hasta que el usuario la cierre
+
+        System.exit(1); // Termina la aplicación con código de error
     }
 
     /**
