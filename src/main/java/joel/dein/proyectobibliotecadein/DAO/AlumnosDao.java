@@ -18,6 +18,11 @@ public class AlumnosDao {
         conn = ConexionBBDD.getConnection();
     }
 
+    /**
+     * constructor tipico
+     *
+     * @throws SQLException
+     */
     public AlumnosDao() throws SQLException {
     }
 

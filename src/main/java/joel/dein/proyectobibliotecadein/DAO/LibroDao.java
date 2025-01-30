@@ -221,6 +221,13 @@ public class LibroDao {
         return false;
     }
 
+    /**
+     * cambia el estado de un libro segun el recibido
+     *
+     * @param idLibro  id del libro
+     * @param nuevoEstado estado del libro
+     * @return truew si lo consigue
+     */
     public static boolean updateLibroEstado(int idLibro, String nuevoEstado) {
         String sql = "UPDATE Libro SET estado = ? WHERE codigo = ?";
         try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
