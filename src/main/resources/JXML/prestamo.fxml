@@ -14,7 +14,7 @@
 
 <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="260.0" prefWidth="410.0" stylesheets="@../STYLES/styles.css" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="joel.dein.proyectobibliotecadein.CONTROLLER.PrestamoController">
    <children>
-      <Label alignment="CENTER" prefHeight="71.0" prefWidth="624.0" text="Prestamo">
+      <Label alignment="CENTER" prefHeight="71.0" prefWidth="624.0" text="%lb.prestamo">
          <font>
             <Font size="40.0" />
          </font>
@@ -32,9 +32,9 @@
                 <RowConstraints maxHeight="44.59998168945313" minHeight="10.0" prefHeight="34.999975585937506" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
-                  <Label text="Estudiante: " />
-                  <Label text="Libro:" GridPane.rowIndex="1" />
-                  <Label text="Fecha del prestamo:" GridPane.rowIndex="2" />
+                  <Label text="%lb.estudiante" />
+                  <Label text="%lb.libro" GridPane.rowIndex="1" />
+                  <Label text="%lb.fechaprestamo" GridPane.rowIndex="2" />
                   <ComboBox fx:id="cbEstudiante" prefWidth="150.0" GridPane.columnIndex="1" />
                   <ComboBox fx:id="cbLibro" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                   <DatePicker fx:id="doFechaPrestamo" GridPane.columnIndex="1" GridPane.rowIndex="2" />
@@ -47,8 +47,8 @@
       </VBox>
       <HBox alignment="CENTER" prefHeight="41.0" prefWidth="410.0" spacing="75.0">
          <children>
-            <Button mnemonicParsing="false" onAction="#guardarCambios" text="Guardar" />
-            <Button mnemonicParsing="false" onAction="#cancelar" text="Cancelar" />
+            <Button mnemonicParsing="false" onAction="#guardarCambios" text="%bt.guardar" />
+            <Button mnemonicParsing="false" onAction="#cancelar" text="%bt.cancelar" />
          </children>
       </HBox>
    </children>

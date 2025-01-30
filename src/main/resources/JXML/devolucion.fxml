@@ -14,7 +14,7 @@
 
 <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="260.0" prefWidth="410.0" stylesheets="@../STYLES/styles.css" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="joel.dein.proyectobibliotecadein.CONTROLLER.DevolucionController">
    <children>
-      <Label alignment="CENTER" prefHeight="71.0" prefWidth="624.0" text="Devolucion">
+      <Label alignment="CENTER" prefHeight="71.0" prefWidth="624.0" text="%lb.devolucion">
          <font>
             <Font size="40.0" />
          </font>
@@ -31,8 +31,8 @@
                   <RowConstraints maxHeight="86.39999999999999" minHeight="10.0" prefHeight="42.40000610351561" vgrow="SOMETIMES" />
                </rowConstraints>
                <children>
-                  <Label text="Nuevo estado del libro:" />
-                  <Label text="Fecha de Devolucion:" GridPane.rowIndex="1" />
+                  <Label text="%lb.estadodellibro" />
+                  <Label text="%lb.fechadevolucion" GridPane.rowIndex="1" />
                   <ComboBox fx:id="cbEstadoLibro" prefWidth="150.0" GridPane.columnIndex="1" />
                   <DatePicker fx:id="doFechaDevolucion" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                </children>
@@ -44,8 +44,8 @@
       </VBox>
       <HBox alignment="CENTER" prefHeight="41.0" prefWidth="410.0" spacing="75.0">
          <children>
-            <Button mnemonicParsing="false" onAction="#guardarCambios" text="Guardar" />
-            <Button mnemonicParsing="false" onAction="#cancelar" text="Cancelar" />
+            <Button mnemonicParsing="false" onAction="#guardarCambios" text="%bt.guardar" />
+            <Button mnemonicParsing="false" onAction="#cancelar" text="%bt.cancelar" />
          </children>
       </HBox>
    </children>

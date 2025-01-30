@@ -10,20 +10,20 @@
 
 <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="435.0" prefWidth="286.0" stylesheets="@../STYLES/styles.css" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="joel.dein.proyectobibliotecadein.CONTROLLER.AlumnosController">
    <children>
-      <Label alignment="CENTER" prefHeight="47.0" prefWidth="290.0" text="Alumno">
+      <Label alignment="CENTER" prefHeight="47.0" prefWidth="290.0" text="%lb.alumno">
          <font>
             <Font size="40.0" />
          </font>
       </Label>
       <VBox prefHeight="359.0" prefWidth="189.0" spacing="15.0">
          <children>
-            <Label text="DNI" />
+            <Label text="%lb.dni" />
             <TextField fx:id="tfDniAlumno" prefHeight="26.0" prefWidth="151.0" />
-            <Label text="Nombre" />
+            <Label text="%lb.nombre" />
             <TextField fx:id="tfNombreAlumno" prefHeight="26.0" prefWidth="151.0" />
-            <Label text="Apellido 1" />
+            <Label text="%lb.apellido1" />
             <TextField fx:id="tfPrimerApellidoAlumno" prefHeight="26.0" prefWidth="151.0" />
-            <Label text="Apellido 2" />
+            <Label text="%lb.apellido2" />
             <TextField fx:id="tfSegundoApellidoAlumno" prefHeight="26.0" prefWidth="151.0" />
          </children>
          <padding>
@@ -32,8 +32,8 @@
       </VBox>
       <HBox alignment="CENTER" prefHeight="100.0" prefWidth="286.0" spacing="75.0">
          <children>
-            <Button mnemonicParsing="false" onAction="#guardarAlumno" text="Guardar" />
-            <Button mnemonicParsing="false" onAction="#cancelar" text="Cancelar" />
+            <Button mnemonicParsing="false" onAction="#guardarAlumno" text="%bt.guardar" />
+            <Button mnemonicParsing="false" onAction="#cancelar" text="%bt.cancelar" />
          </children>
       </HBox>
    </children>

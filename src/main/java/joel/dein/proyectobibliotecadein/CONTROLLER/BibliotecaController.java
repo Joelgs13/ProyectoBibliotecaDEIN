@@ -521,4 +521,24 @@ public class BibliotecaController implements Initializable {
             e.printStackTrace();
         }
     }
+
+    @FXML
+    public void cargarAcercaDe(ActionEvent event) {
+        // Crear la ventana de alerta
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Acerca de");
+        alert.setHeaderText("Información sobre la aplicación");
+        alert.setContentText(
+                "Autor: Joel González Salgado\n" +
+                        "Fecha de comienzo del desarrollo: 16 de enero del 2025\n" +
+                        "Alumno de Desarrollo de Aplicaciones Multiplataforma\n\n" +
+                        "Descripción:\n" +
+                        "Esta aplicación permite gestionar los datos de una biblioteca,\n" +
+                        "incluyendo préstamos, devoluciones, libros y alumnos."
+        );
+
+        // Mostrar la ventana
+        alert.showAndWait();
+    }
+
 }

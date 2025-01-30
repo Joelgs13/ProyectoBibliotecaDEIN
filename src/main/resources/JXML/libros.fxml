@@ -13,9 +13,9 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="483.0" prefWidth="403.0" stylesheets="@../STYLES/styles.css" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="joel.dein.proyectobibliotecadein.CONTROLLER.LibrosController">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="483.0" prefWidth="403.0" stylesheets="@../STYLES/styles.css" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="joel.dein.proyectobibliotecadein.CONTROLLER.LibrosController">
    <children>
-      <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="67.0" prefWidth="513.0" text="%app.name" textAlignment="CENTER">
+      <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="67.0" prefWidth="513.0" text="%lb.libros" textAlignment="CENTER">
          <font>
             <Font size="40.0" />
          </font>
@@ -24,13 +24,13 @@
          <children>
             <AnchorPane prefHeight="369.0" prefWidth="199.0">
                <children>
-                  <Button layoutY="53.0" mnemonicParsing="false" onAction="#aniadirImagen" prefHeight="30.0" prefWidth="94.0" text="Añadir" />
-                  <Label layoutX="66.0" layoutY="14.0" text="Portada">
+                  <Button layoutY="53.0" mnemonicParsing="false" onAction="#aniadirImagen" prefHeight="30.0" prefWidth="94.0" text="%bt.aniadir" />
+                  <Label layoutX="66.0" layoutY="14.0" text="%lb.portada">
                      <font>
                         <Font size="20.0" />
                      </font>
                   </Label>
-                  <Button layoutX="109.0" layoutY="53.0" mnemonicParsing="false" onAction="#borrarImagen" text="Borrar" />
+                  <Button layoutX="109.0" layoutY="53.0" mnemonicParsing="false" onAction="#borrarImagen" text="%bt.borrar" />
                   <ImageView fx:id="ivImagenDePortada" fitHeight="224.0" fitWidth="182.0" layoutX="9.0" layoutY="98.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../IMG/libroIcono.png" />
@@ -40,15 +40,15 @@
             </AnchorPane>
             <VBox prefHeight="359.0" prefWidth="189.0" spacing="15.0">
                <children>
-                  <Label text="Titulo" />
+                  <Label text="%lb.titulo" />
                   <TextField fx:id="tfTituloLibro" prefHeight="26.0" prefWidth="151.0" />
-                  <Label text="Autor" />
+                  <Label text="%lb.autor" />
                   <TextField fx:id="tfAutorLibro" prefHeight="26.0" prefWidth="151.0" />
-                  <Label text="Editorial" />
+                  <Label text="%lb.editorial" />
                   <TextField fx:id="tfEditorialLibro" prefHeight="26.0" prefWidth="151.0" />
-                  <Label text="Estado" />
+                  <Label text="%lb.estado" />
                   <ComboBox fx:id="cbEstadoLibro" prefHeight="26.0" prefWidth="197.0" />
-                  <CheckBox fx:id="cbBajaLibro" mnemonicParsing="false" text="Baja?" />
+                  <CheckBox fx:id="cbBajaLibro" mnemonicParsing="false" text="%lb.baja" />
                </children>
                <padding>
                   <Insets bottom="10.0" top="10.0" />
@@ -61,8 +61,8 @@
       </HBox>
       <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="75.0">
          <children>
-            <Button mnemonicParsing="false" onAction="#guardarCambios" text="Guardar" />
-            <Button mnemonicParsing="false" onAction="#cancelar" text="Cancelar" />
+            <Button mnemonicParsing="false" onAction="#guardarCambios" text="%bt.guardar" />
+            <Button mnemonicParsing="false" onAction="#cancelar" text="%bt.cancelar" />
          </children>
       </HBox>
    </children>
