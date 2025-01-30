@@ -1,7 +1,9 @@
 package joel.dein.proyectobibliotecadein.BBDD;
 
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -44,6 +46,35 @@ public class ConexionBBDD {
         return connection;
     }
 
+
+    public static Properties cargarIdioma() {
+        try (FileInputStream fs = new FileInputStream("idioma.properties")) {
+            Properties props = new Properties();
+            props.load(fs);
+            return props;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    /**
+     * Guarda el idioma especificado en el archivo "idioma.properties".
+     *
+     * @param nuevoIdioma El código del nuevo idioma (ej. "es", "en").
+     */
+    public static void guardarIdioma(String nuevoIdioma) {
+        Properties properties = cargarIdioma();
+        if (properties != null) {
+            properties.setProperty("language", nuevoIdioma);
+
+            try (OutputStream output = new FileOutputStream("idioma.properties")) {
+                properties.store(output, "");
+            } catch (IOException io) {
+                io.printStackTrace();
+            }
+        }
+    }
     /**
      * Cierra la conexión activa con la base de datos.
      *

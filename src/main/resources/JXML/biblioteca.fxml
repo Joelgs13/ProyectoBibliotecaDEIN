@@ -19,7 +19,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="601.0" prefWidth="840.0" stylesheets="@../STYLES/styles.css" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="joel.dein.proyectobibliotecadein.CONTROLLER.BibliotecaController">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="601.0" prefWidth="840.0" stylesheets="@../STYLES/styles.css" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="joel.dein.proyectobibliotecadein.CONTROLLER.BibliotecaController">
    <children>
       <MenuBar>
         <menus>
@@ -41,6 +41,11 @@
               <MenuItem mnemonicParsing="false" onAction="#cargarGuia" text="Guia" />
             </items>
           </Menu>
+            <Menu mnemonicParsing="false" text="Acerca de">
+               <items>
+                  <MenuItem mnemonicParsing="false" onAction="#cargarGuia" text="informacion" />
+               </items>
+            </Menu>
         </menus>
          <tooltip>
             <Tooltip text="Opciones varias" />
@@ -53,9 +58,9 @@
                   <Image url="@../IMG/logoBiblioteca.png" />
                </image>
             </ImageView>
-            <Label prefHeight="144.0" prefWidth="178.0" text="LibroVerso">
+            <Label prefHeight="144.0" prefWidth="178.0" text="%app.name">
                <font>
-                  <Font size="36.0" />
+                  <Font size="24.0" />
                </font>
             </Label>
          </children>

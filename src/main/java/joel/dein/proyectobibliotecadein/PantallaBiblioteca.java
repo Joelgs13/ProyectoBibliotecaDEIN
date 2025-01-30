@@ -7,7 +7,9 @@ import javafx.stage.Stage;
 import joel.dein.proyectobibliotecadein.BBDD.ConexionBBDD;
 
 import java.io.IOException;
+import java.util.Locale;
 import java.util.Properties;
+import java.util.ResourceBundle;
 
 /**
  * La clase pantallaBiblioteca gestiona la inicialización y el lanzamiento de la ventana principal
@@ -30,8 +32,14 @@ public class PantallaBiblioteca extends Application {
 
         stage = s;  // Establece el escenario principal
 
+        Properties properties = ConexionBBDD.cargarIdioma();
+        String lang = properties.getProperty("language");
+
+// Cargar el recurso de idioma adecuado utilizando el archivo de propiedades
+        Locale locale = new Locale(lang);
+        ResourceBundle bundle = ResourceBundle.getBundle("LANGUAGES/lang", locale);
         // Cargar el archivo FXML para la interfaz de la biblioteca
-        FXMLLoader fxmlLoader = new FXMLLoader(PantallaBiblioteca.class.getResource("/JXML/biblioteca.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(PantallaBiblioteca.class.getResource("/JXML/biblioteca.fxml"), bundle);
 
         // Crear la escena con el archivo FXML cargado
         Scene scene = new Scene(fxmlLoader.load());

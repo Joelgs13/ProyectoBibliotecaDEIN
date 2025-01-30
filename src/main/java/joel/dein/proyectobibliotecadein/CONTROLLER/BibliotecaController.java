@@ -39,10 +39,7 @@ import java.net.URL;
 import java.sql.Blob;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.ResourceBundle;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class BibliotecaController implements Initializable {
@@ -215,7 +212,13 @@ public class BibliotecaController implements Initializable {
     * */
     private <T> T cargarPantalla(String rutaFXML, String titulo) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource(rutaFXML));
+            Properties properties = ConexionBBDD.cargarIdioma();
+            String lang = properties.getProperty("language");
+
+// Cargar el recurso de idioma adecuado utilizando el archivo de propiedadess
+            Locale locale = new Locale(lang);
+            ResourceBundle bundle = ResourceBundle.getBundle("LANGUAGES/lang", locale);
+            FXMLLoader loader = new FXMLLoader(getClass().getResource(rutaFXML), bundle);
             Parent root = loader.load();
 
             Stage stage = new Stage();
@@ -487,11 +490,35 @@ public class BibliotecaController implements Initializable {
     }
 
     public void idiomaEspaniol(ActionEvent event) {
-        // Implementa el cambio de idioma a español
+        ConexionBBDD.guardarIdioma("es");
+        Stage stage = (Stage) tfFiltrarAlumno.getScene().getWindow();
+        this.actualizarVentana(stage);
     }
 
     public void idiomaIngles(ActionEvent event) {
-        // Implementa el cambio de idioma a inglés
+        ConexionBBDD.guardarIdioma("en");
+        Stage stage = (Stage) tfFiltrarAlumno.getScene().getWindow();
+        this.actualizarVentana(stage);
     }
 
+    public void actualizarVentana(Stage stage) {
+        try {
+            // Cargar las propiedades de idioma y establecer el nuevo locale
+            Properties properties = ConexionBBDD.cargarIdioma();
+            String lang = properties.getProperty("language");
+            Locale locale = new Locale(lang);
+            ResourceBundle bundle = ResourceBundle.getBundle("LANGUAGES/lang", locale);
+
+            // Cargar el archivo FXML de la ventana principal con el nuevo ResourceBundle
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/JXML/biblioteca.fxml"), bundle);
+            Parent root = fxmlLoader.load();
+
+            // Verificar que el Stage no sea nulo antes de cambiar la raíz de la escena
+            if (stage != null) {
+                stage.getScene().setRoot(root);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }
