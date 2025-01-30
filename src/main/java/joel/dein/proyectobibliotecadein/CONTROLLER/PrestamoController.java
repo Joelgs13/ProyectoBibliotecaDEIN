@@ -54,7 +54,7 @@ public class PrestamoController {
     }
 
     /**
-     * Método que se ejecuta al inicializar la vista de préstamo. Carga los estudiantes y los libros disponibles.
+     * Metodo que se ejecuta al inicializar la vista de préstamo. Carga los estudiantes y los libros disponibles.
      */
     @FXML
     public void initialize() {

@@ -133,6 +133,24 @@
                     <show>public</show>
                 </configuration>
             </plugin>
+            <!-- Plugin Maven Assembly para empaquetar JAR con dependencias -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <version>3.7.1</version>
+                <configuration>
+                    <archive>
+                        <manifest>
+                            <addClasspath>true</addClasspath>
+                            <!-- Cambia "com.tu.paquete.MainClass" a tu clase principal -->
+                            <mainClass>joel.dein.proyectobibliotecadein.pantallaBiblioteca</mainClass> <!-- Cambiar por tu clase principal -->
+                        </manifest>
+                    </archive>
+                    <descriptorRefs>
+                        <descriptorRef>jar-with-dependencies</descriptorRef> <!-- Incluye dependencias -->
+                    </descriptorRefs>
+                </configuration>
+            </plugin>
         </plugins>
     </reporting>
 </project>
